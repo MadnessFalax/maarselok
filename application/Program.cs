@@ -1,4 +1,4 @@
-﻿namespace CS_projekt
+﻿namespace CS_projekt.application
 {
     internal class Program
     {
