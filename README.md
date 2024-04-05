@@ -1,1 +1,2 @@
-# CS_projekt
+# C# project
+This repository contains a project assigned during C# lecture at VSB-TUO. The description and topic of the project can be found on https://www.fei.vsb.cz/export/sites/fei/460/cs/kontakt/lide/michal-radecky/csharp2/1-intro-2024.pdf. The goal an implementation of lightweight IS that consists of SQLite DB, WPF desktop application for management and ASP.NET web application for customer services.
