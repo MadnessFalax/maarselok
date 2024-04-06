@@ -1,5 +1,4 @@
-﻿using Dapper;
-using Microsoft.Data.Sqlite;
+﻿using Microsoft.Data.Sqlite;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,13 +17,10 @@ namespace CS_projekt.data
         {
             initDB();
 
-            Application a = Application.Create(new Application(1, 1));
-            /*a.Address = "Nová Adresa 420, Ostrava 111 11";
-            a.Refresh();
-            a.Commit();*/ 
-            // create DB
-            /*
-            using (var connection = new SqliteConnection(connection_string))
+            TableOperation<Student>.RefreshAll();
+            TableOperation<School>.RefreshAll();
+            // create DB schema
+            /*using (var connection = new SqliteConnection(connection_string))
             {
                 connection.Open();
 
@@ -34,15 +30,22 @@ namespace CS_projekt.data
             }
             */
 
+            var stud_map = TableOperation<Student>.identity_map;
+            var school_map = TableOperation<School>.identity_map;
+
+            var school = school_map[1];
+            school.Address = "Upravená adresa";
+
+            TableOperation<School>.Update(ref school);
+
         }
 
         static private void initDB()
         {
-            SimpleCRUD.SetDialect(SimpleCRUD.Dialect.SQLite);
-            Student.SetConnectionString(connection_string);
-            School.SetConnectionString(connection_string);
-            Program.SetConnectionString(connection_string);
-            Application.SetConnectionString(connection_string);
+            DBGateway<Student>.setConnectionString(connection_string);
+            DBGateway<School>.setConnectionString(connection_string);
+            DBGateway<Application>.setConnectionString(connection_string);
+            DBGateway<Program>.setConnectionString(connection_string);
         }
 
     }
