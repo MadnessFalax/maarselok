@@ -1,12 +1,390 @@
 ﻿<Window x:Class="desktop_client.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:i="clr-namespace:WPF_Icons;assembly=WPF-Icons"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:desktop_client"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-    <Grid>
+    <Window.Resources>
+        <Style x:Key="RoundedButtonStyle" TargetType="Button">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="3"
+                                Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+    <Grid Background="DarkGray">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition>
+                
+            </ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition>
 
+            </RowDefinition>
+        </Grid.RowDefinitions>
+        <TabControl Grid.Row="0" Grid.Column="0">
+            <TabItem Header="School">
+                <Grid VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Background="LightGray">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="25">
+                            
+                        </RowDefinition>
+                        <RowDefinition Height="*">
+                            
+                        </RowDefinition>
+                        <RowDefinition Height="35">
+                            
+                        </RowDefinition>
+                    </Grid.RowDefinitions>
+                    <Grid Grid.Row="0" Margin="5, 5, 5, 0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto">
+                                
+                            </ColumnDefinition>
+                            <ColumnDefinition Width="*">
+                                
+                            </ColumnDefinition>
+                            <ColumnDefinition Width="auto">
+                                
+                            </ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Grid.Column="0" Orientation="Horizontal">
+                            <TextBox Width="105" Margin="0, 0, 5, 0" Text="{Binding Path=SchoolSearch, Mode=TwoWay}"></TextBox>
+                            <Button Click="SchoolSearchCallback">
+                                <i:Icon Kind="icon_search" Color="#000" Size="15"></i:Icon>
+                            </Button>
+                        </StackPanel>
+                        <Button Grid.Column="2" Click="SchoolRefreshCallback">
+                            <i:Icon Kind="icon_refresh" Color="#000000" Size="15"></i:Icon>
+                        </Button>
+                    </Grid>
+                    <DataGrid Margin="5, 5, 5, 5" Grid.Row="1" IsReadOnly="True" x:Name="SchoolGrid" ItemsSource="{Binding schools}" AutoGenerateColumns="False">
+                        <DataGrid.Columns>
+                            <DataGridTemplateColumn Header="Select">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Grid Background="#EEEEEE">
+                                            <CheckBox HorizontalAlignment="Center" VerticalAlignment="Center" IsChecked="{Binding Path=Checked, Mode=TwoWay}"></CheckBox>
+                                        </Grid>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTextColumn Header="ID" Binding="{Binding Path=Entry.Id}"></DataGridTextColumn>
+                            <DataGridTextColumn Header="Name" Binding="{Binding Path=Entry.Name}"></DataGridTextColumn>
+                            <DataGridTextColumn Header="Address" Binding="{Binding Path=Entry.Address}"></DataGridTextColumn>
+                            <DataGridTextColumn Header="Created" Binding="{Binding Path=Entry.Created}"></DataGridTextColumn>
+                            <DataGridTextColumn Header="Last Updated" Binding="{Binding Path=Entry.LastUpdated}"></DataGridTextColumn>
+                            <DataGridTemplateColumn>
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Grid>
+                                            <Button Style="{StaticResource RoundedButtonStyle}" MinWidth="30" Click="SchoolEditCallback">Edit</Button>
+                                        </Grid>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                    <Grid Grid.Row="2" Margin="5, 0, 5, 5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*">
+                                
+                            </ColumnDefinition>
+                            <ColumnDefinition Width="100">
+
+                            </ColumnDefinition>
+                            <ColumnDefinition Width="100">
+                                
+                            </ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <Button Grid.Column="2" Margin="5, 0, 0, 0" Style="{StaticResource RoundedButtonStyle}" Click="SchoolDeleteCallback">
+                            Delete Selection
+                        </Button>
+                        <Button Grid.Column="1" Margin="5, 0, 0, 0" Style="{StaticResource RoundedButtonStyle}" Click="SchoolCreateCallback">
+                            New Entry
+                        </Button>
+                    </Grid>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Program">
+                <Grid VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Background="LightGray">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="25">
+
+                        </RowDefinition>
+                        <RowDefinition Height="*">
+
+                        </RowDefinition>
+                        <RowDefinition Height="35">
+
+                        </RowDefinition>
+                    </Grid.RowDefinitions>
+                    <Grid Grid.Row="0" Margin="5, 5, 5, 0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto">
+
+                            </ColumnDefinition>
+                            <ColumnDefinition Width="*">
+
+                            </ColumnDefinition>
+                            <ColumnDefinition Width="auto">
+
+                            </ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Grid.Column="0" Orientation="Horizontal">
+                            <TextBox Width="105" Margin="0, 0, 5, 0" Text="{Binding Path=ProgramSearch, Mode=TwoWay}"></TextBox>
+                            <Button Click="ProgramSearchCallback">
+                                <i:Icon Kind="icon_search" Color="#000" Size="15"></i:Icon>
+                            </Button>
+                        </StackPanel>
+                        <Button Grid.Column="2" Click="ProgramRefreshCallback">
+                            <i:Icon Kind="icon_refresh" Color="#000000" Size="15"></i:Icon>
+                        </Button>
+                    </Grid>
+                    <DataGrid Margin="5, 5, 5, 5" Grid.Row="1" IsReadOnly="True" x:Name="ProgramGrid" ItemsSource="{Binding programs}" AutoGenerateColumns="False">
+                        <DataGrid.Columns>
+                            <DataGridTemplateColumn Header="Select">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Grid Background="#EEEEEE">
+                                            <CheckBox HorizontalAlignment="Center" VerticalAlignment="Center" IsChecked="{Binding Path=Checked, Mode=TwoWay}"></CheckBox>
+                                        </Grid>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTextColumn Header="ID" Binding="{Binding Path=Entry.Id}"></DataGridTextColumn>
+                            <DataGridTextColumn Header="Name" Binding="{Binding Path=Entry.Name}"></DataGridTextColumn>
+                            <DataGridTextColumn Header="Description" Binding="{Binding Path=Entry.Description}"></DataGridTextColumn>
+                            <DataGridTextColumn Header="Application Count" Binding="{Binding Path=Entry.ApplicationCount}"></DataGridTextColumn>
+                            <DataGridTextColumn Header="Capacity" Binding="{Binding Path=Entry.Capacity}"></DataGridTextColumn>
+                            <DataGridTextColumn Header="School Id" Binding="{Binding Path=Entry.SchoolId}"></DataGridTextColumn>
+                            <DataGridTextColumn Header="Created" Binding="{Binding Path=Entry.Created}"></DataGridTextColumn>
+                            <DataGridTextColumn Header="Last Updated" Binding="{Binding Path=Entry.LastUpdated}"></DataGridTextColumn>
+                            <DataGridTemplateColumn>
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Grid>
+                                            <Button Style="{StaticResource RoundedButtonStyle}" MinWidth="30" Click="ProgramEditCallback">Edit</Button>
+                                        </Grid>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                    <Grid Grid.Row="2" Margin="5, 0, 5, 5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*">
+
+                            </ColumnDefinition>
+                            <ColumnDefinition Width="100">
+
+                            </ColumnDefinition>
+                            <ColumnDefinition Width="100">
+
+                            </ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <Button Grid.Column="2" Margin="5, 0, 0, 0" Style="{StaticResource RoundedButtonStyle}" Click="ProgramDeleteCallback">
+                            Delete Selection
+                        </Button>
+                        <Button Grid.Column="1" Margin="5, 0, 0, 0" Style="{StaticResource RoundedButtonStyle}" Click="ProgramCreateCallback">
+                            New Entry
+                        </Button>
+                    </Grid>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Application">
+                <Grid VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Background="LightGray">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="25">
+
+                        </RowDefinition>
+                        <RowDefinition Height="*">
+
+                        </RowDefinition>
+                        <RowDefinition Height="35">
+
+                        </RowDefinition>
+                    </Grid.RowDefinitions>
+                    <Grid Grid.Row="0" Margin="5, 5, 5, 0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto">
+
+                            </ColumnDefinition>
+                            <ColumnDefinition Width="*">
+
+                            </ColumnDefinition>
+                            <ColumnDefinition Width="auto">
+
+                            </ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Grid.Column="0" Orientation="Horizontal">
+                            <TextBox Width="105" Margin="0, 0, 5, 0" Text="{Binding Path=ApplicationSearch, Mode=TwoWay}"></TextBox>
+                            <Button Click="ApplicationSearchCallback">
+                                <i:Icon Kind="icon_search" Color="#000" Size="15"></i:Icon>
+                            </Button>
+                        </StackPanel>
+                        <Button Grid.Column="2" Click="ApplicationRefreshCallback">
+                            <i:Icon Kind="icon_refresh" Color="#000000" Size="15"></i:Icon>
+                        </Button>
+                    </Grid>
+                    <DataGrid Margin="5, 5, 5, 5" Grid.Row="1" IsReadOnly="True" x:Name="ApplicationGrid" ItemsSource="{Binding applications}" AutoGenerateColumns="False">
+                        <DataGrid.Columns>
+                            <DataGridTemplateColumn Header="Select">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Grid Background="#EEEEEE">
+                                            <CheckBox HorizontalAlignment="Center" VerticalAlignment="Center" IsChecked="{Binding Path=Checked, Mode=TwoWay}"></CheckBox>
+                                        </Grid>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTextColumn Header="ID" Binding="{Binding Path=Entry.Id}"></DataGridTextColumn>
+                            <DataGridTextColumn Header="Student ID" Binding="{Binding Path=Entry.StudentId}"></DataGridTextColumn>
+                            <DataGridTextColumn Header="Program ID" Binding="{Binding Path=Entry.ProgramId}"></DataGridTextColumn>
+                            <DataGridTextColumn Header="Created" Binding="{Binding Path=Entry.Created}"></DataGridTextColumn>
+                            <DataGridTextColumn Header="Last Updated" Binding="{Binding Path=Entry.LastUpdated}"></DataGridTextColumn>
+                            <DataGridTemplateColumn>
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Grid>
+                                            <Button Style="{StaticResource RoundedButtonStyle}" MinWidth="30" Click="ApplicationEditCallback">Edit</Button>
+                                        </Grid>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                    <Grid Grid.Row="2" Margin="5, 0, 5, 5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*">
+
+                            </ColumnDefinition>
+                            <ColumnDefinition Width="100">
+
+                            </ColumnDefinition>
+                            <ColumnDefinition Width="100">
+
+                            </ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <Button Grid.Column="2" Margin="5, 0, 0, 0" Style="{StaticResource RoundedButtonStyle}" Click="ApplicationDeleteCallback">
+                            Delete Selection
+                        </Button>
+                        <Button Grid.Column="1" Margin="5, 0, 0, 0" Style="{StaticResource RoundedButtonStyle}" Click="ApplicationCreateCallback">
+                            New Entry
+                        </Button>
+                    </Grid>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Student">
+                <Grid VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Background="LightGray">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="25">
+
+                        </RowDefinition>
+                        <RowDefinition Height="*">
+
+                        </RowDefinition>
+                        <RowDefinition Height="35">
+
+                        </RowDefinition>
+                    </Grid.RowDefinitions>
+                    <Grid Grid.Row="0" Margin="5, 5, 5, 0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto">
+
+                            </ColumnDefinition>
+                            <ColumnDefinition Width="*">
+
+                            </ColumnDefinition>
+                            <ColumnDefinition Width="auto">
+
+                            </ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Grid.Column="0" Orientation="Horizontal">
+                            <TextBox Width="105" Margin="0, 0, 5, 0" Text="{Binding Path=StudentSearch, Mode=TwoWay}"></TextBox>
+                            <Button Click="StudentSearchCallback">
+                                <i:Icon Kind="icon_search" Color="#000" Size="15"></i:Icon>
+                            </Button>
+                        </StackPanel>
+                        <Button Grid.Column="2" Click="StudentRefreshCallback">
+                            <i:Icon Kind="icon_refresh" Color="#000000" Size="15"></i:Icon>
+                        </Button>
+                    </Grid>
+                    <DataGrid Margin="5, 5, 5, 5" Grid.Row="1" IsReadOnly="True" x:Name="StudentGrid" ItemsSource="{Binding students}" AutoGenerateColumns="False">
+                        <DataGrid.Columns>
+                            <DataGridTemplateColumn Header="Select">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Grid Background="#EEEEEE">
+                                            <CheckBox HorizontalAlignment="Center" VerticalAlignment="Center" IsChecked="{Binding Path=Checked, Mode=TwoWay}"></CheckBox>
+                                        </Grid>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTextColumn Header="ID" Binding="{Binding Path=Entry.Id}"></DataGridTextColumn>
+                            <DataGridTextColumn Header="Name" Binding="{Binding Path=Entry.Name}"></DataGridTextColumn>
+                            <DataGridTextColumn Header="Address" Binding="{Binding Path=Entry.Address}"></DataGridTextColumn>
+                            <DataGridTextColumn Header="Email" Binding="{Binding Path=Entry.Email}"></DataGridTextColumn>
+                            <DataGridTextColumn Header="Application Count" Binding="{Binding Path=Entry.ApplicationCount}"></DataGridTextColumn>
+                            <DataGridTextColumn Header="Created" Binding="{Binding Path=Entry.Created}"></DataGridTextColumn>
+                            <DataGridTextColumn Header="Last Updated" Binding="{Binding Path=Entry.LastUpdated}"></DataGridTextColumn>
+                            <DataGridTemplateColumn>
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Grid>
+                                            <Button Style="{StaticResource RoundedButtonStyle}" MinWidth="30" Click="StudentEditCallback">Edit</Button>
+                                        </Grid>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                    <Grid Grid.Row="2" Margin="5, 0, 5, 5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*">
+
+                            </ColumnDefinition>
+                            <ColumnDefinition Width="100">
+
+                            </ColumnDefinition>
+                            <ColumnDefinition Width="100">
+
+                            </ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <Button Grid.Column="2" Margin="5, 0, 0, 0" Style="{StaticResource RoundedButtonStyle}" Click="StudentDeleteCallback">
+                            Delete Selection
+                        </Button>
+                        <Button Grid.Column="1" Margin="5, 0, 0, 0" Style="{StaticResource RoundedButtonStyle}" Click="StudentCreateCallback">
+                            New Entry
+                        </Button>
+                    </Grid>
+                </Grid>
+            </TabItem>
+        </TabControl>
     </Grid>
 </Window>

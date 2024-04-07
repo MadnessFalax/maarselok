@@ -15,11 +15,13 @@ namespace desktop_client
     /// </summary>
     public partial class App : Application
     {
-        public void mock_method()
+        protected override void OnStartup(StartupEventArgs e)
         {
-            var a = DataEntryPoint.StudentMap;
-            TableOperation<StudentTable>.RefreshAll();
-            
+            base.OnStartup(e);
+
+            DataEntryPoint.initDB();
+            DataEntryPoint.loadDB();
+
         }
     }
 }
