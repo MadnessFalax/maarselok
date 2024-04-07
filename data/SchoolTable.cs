@@ -1,39 +1,31 @@
 ﻿using Microsoft.Data.Sqlite;
 using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Linq;
-using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace CS_projekt.data
 {
-    internal class Student : ITable
+    public class SchoolTable : ITable
     {
         public int? Id { get; set; }
         public string? Name { get; set; }
         public string? Address { get; set; }
-        public string? Email { get; set; }
-        public int? ApplicationCount { get; set; }
         public DateTime? Created { get; set; }
         public DateTime? LastUpdated { get; set; }
-        public Dictionary<int, Application> Applications = new Dictionary<int, Application>();
+        public Dictionary<int, ProgramTable> Programs = new Dictionary<int, ProgramTable>();
 
-        public Student() 
+        public SchoolTable() 
         {
             LastUpdated = DateTime.Now;
         }
 
-        public Student(string name, string address, string email)
+        public SchoolTable(string name, string? address)
         {
             Name = name;
             Address = address;
-            Email = email;
-            ApplicationCount = 0;
             Created = DateTime.Now;
-            LastUpdated = DateTime.Now;
-
         }
 
         public void MapRelations()
@@ -41,22 +33,23 @@ namespace CS_projekt.data
 
         }
 
-        public void RemoveRelative(int id, Type type)
+        public void RemoveRelative(int id, Type type) 
         {
-            if (type == typeof(Application)) 
+
+            if (type == typeof(ProgramTable))
             {
-                if (Applications.ContainsKey(id))
+                if (Programs.ContainsKey(id))
                 {
-                    Applications.Remove(id);
+                    Programs.Remove(id);
                 }
             }
         }
-        
+
         public void RemoveSelfFromRelatives()
         {
-            foreach(var application in Applications.Values)
+            foreach(var program in Programs.Values) 
             {
-                application.RemoveRelative(Id.Value, typeof(Student));
+                program.RemoveRelative(Id.Value, typeof(SchoolTable));
             }
         }
     }

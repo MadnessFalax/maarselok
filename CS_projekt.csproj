@@ -6,11 +6,13 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <Configurations>Debug;Release;Database</Configurations>
-    <StartupObject>CS_projekt.data.data_test</StartupObject>
+    <StartupObject>CS_projekt.data.DataEntryPoint</StartupObject>
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="presentation\" />
+    <Compile Remove="presentation\**" />
+    <EmbeddedResource Remove="presentation\**" />
+    <None Remove="presentation\**" />
   </ItemGroup>
 
   <ItemGroup>

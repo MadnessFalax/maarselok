@@ -13,7 +13,7 @@ namespace CS_projekt.data
 
     // currently there is race condition bug, when one client deletes a row while other client has the row loaded... when other client modifies/reads delete row an exception is raised
     // selecting before modifying and checking whether at least one result was queried might fix the issue
-    internal class DBGateway<T> where T : ITable
+    public class DBGateway<T> where T : ITable
     {
         static public string connectionString = "";
 
@@ -22,7 +22,7 @@ namespace CS_projekt.data
             DBGateway<T>.connectionString = connectionString;        
         }
 
-        static public T Create(T entity)
+        static public void Create(T entity)
         { 
 
             var tableName = typeof(T).Name;
@@ -32,8 +32,11 @@ namespace CS_projekt.data
 
             foreach (var field in field_collection)
             {
-                field_dict[field.Name] = new KeyValuePair<Type, object>(field.PropertyType, field.GetValue(entity));
-                insert_dict[field.Name] = new KeyValuePair<Type, object>(field.PropertyType, field.GetValue(entity));
+                if (field.PropertyType == typeof(int?) || field.PropertyType == typeof(string) || field.PropertyType == typeof(DateTime?))
+                {
+                    field_dict[field.Name] = new KeyValuePair<Type, object>(field.PropertyType, field.GetValue(entity));
+                    insert_dict[field.Name] = new KeyValuePair<Type, object>(field.PropertyType, field.GetValue(entity));
+                }
             }
 
             if (insert_dict.ContainsKey("Id"))
@@ -67,10 +70,19 @@ namespace CS_projekt.data
                     foreach (var field in insert_dict)
                     {
                         fields.Append($"{field.Key.ToString()},");
-                        if (field.Value.Key == typeof(string) || field.Value.Key == typeof(DateTime))
+                        if (field.Value.Key == typeof(string))
+                        {
                             values.Append($"'{field.Value.Value.ToString()}',");
-                        else
-                            values.Append($"{field.Value.Value.ToString()},");
+                        }
+                        else if(field.Value.Key == typeof(DateTime?))
+                        {
+                            values.Append($"{((DateTime)field.Value.Value).ToString("yyyy-MM-ddTHH:mm:ss")}");
+                        }
+                        else if(field.Value.Key == typeof(int?))
+                        {
+                            values.Append($"{((int?)field.Value.Value).Value.ToString()},");
+                        }
+
                     }
 
                     // remove trailing ','
@@ -82,8 +94,9 @@ namespace CS_projekt.data
                     //cmd.Parameters.AddWithValue("@fields", fields.ToString());
                     //cmd.Parameters.AddWithValue("@values", fields.ToString());
 
-                    id = cmd.ExecuteNonQuery();
+                    cmd.ExecuteNonQuery();
 
+                    /*
                     using var select = connection.CreateCommand();
                     select.CommandText = $"select * from {tableName} where (Id = @id)";
                     select.Parameters.AddWithValue("id", id);
@@ -141,14 +154,12 @@ namespace CS_projekt.data
                             }
                         }
                     }
-
+                    */
                     transaction.Commit();
-                    return new_entity;
                 }
                 catch
                 {
                     transaction.Rollback();
-                    return (T)typeof(T).GetConstructor(new Type[0]).Invoke(null);
                 }
             }
         }
@@ -185,7 +196,10 @@ namespace CS_projekt.data
 
             foreach (var field in field_collection)
             {
-                field_dict[field.Name] = new KeyValuePair<Type, object>(field.PropertyType, field.GetValue(entity));
+                if (field.PropertyType == typeof(string) || field.PropertyType == typeof(int?) || field.PropertyType == typeof(DateTime?))
+                {
+                    field_dict[field.Name] = new KeyValuePair<Type, object>(field.PropertyType, field.GetValue(entity));
+                }
             }
 
             using var connection = new SqliteConnection(connectionString);
@@ -262,7 +276,10 @@ namespace CS_projekt.data
 
             foreach (var field in field_collection)
             {
-                field_dict[field.Name] = new KeyValuePair<Type, object>(field.PropertyType, null);
+                if (field.PropertyType == typeof(string) || field.PropertyType == typeof(int?) || field.PropertyType == typeof(DateTime?))
+                {
+                    field_dict[field.Name] = new KeyValuePair<Type, object>(field.PropertyType, null);
+                }
             }
 
             using var connection = new SqliteConnection(connectionString);
@@ -345,8 +362,11 @@ namespace CS_projekt.data
 
             foreach (var field in field_collection)
             {
-                field_dict[field.Name] = new KeyValuePair<Type, object>(field.PropertyType, field.GetValue(entity));
-                update_dict[field.Name] = new KeyValuePair<Type, object>(field.PropertyType, field.GetValue(entity));
+                if (field.PropertyType == typeof(int?) || field.PropertyType == typeof(string) || field.PropertyType == typeof(DateTime?))
+                {
+                    field_dict[field.Name] = new KeyValuePair<Type, object>(field.PropertyType, field.GetValue(entity));
+                    update_dict[field.Name] = new KeyValuePair<Type, object>(field.PropertyType, field.GetValue(entity));
+                }
             }
 
             var entity_id = field_dict["Id"].Value;

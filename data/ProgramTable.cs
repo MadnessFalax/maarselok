@@ -8,26 +8,26 @@ using System.Threading.Tasks;
 
 namespace CS_projekt.data
 {
-    internal class Program : ITable
+    public class ProgramTable : ITable
     {
 
         public int? Id { get; set; }
         public int? SchoolId { get; set; }
-        public School? School { get; set; }
+        public SchoolTable? School { get; set; }
         public string? Name { get; set; }
         public string? Description { get; set; }
         public int? Capacity { get; set; }
         public int? ApplicationCount { get; set; }
         public DateTime? Created { get; set; }
         public DateTime? LastUpdated { get; set; }
-        public Dictionary<int, Application> Applications = new Dictionary<int, Application>();
+        public Dictionary<int, ApplicationTable> Applications = new Dictionary<int, ApplicationTable>();
 
-        public Program()
+        public ProgramTable()
         {
             LastUpdated = DateTime.Now;
         }
 
-        public Program(int schoolId, string name, string? description, int capacity)
+        public ProgramTable(int schoolId, string name, string? description, int capacity)
         {
             SchoolId = schoolId;
             Name = name;
@@ -41,21 +41,21 @@ namespace CS_projekt.data
         {
             if (SchoolId.HasValue)
             {
-                School = TableOperation<School>.GetRelated(SchoolId.Value);
+                School = TableOperation<SchoolTable>.GetRelated(SchoolId.Value);
                 School.Programs[Id.Value] = this;
             }
         }
 
         public void RemoveRelative(int id, Type type)
         {
-            if (type == typeof(Application))
+            if (type == typeof(ApplicationTable))
             {
                 if (Applications.ContainsKey(id))
                 {
                     Applications.Remove(id);
                 }
             }
-            if (type == typeof(School))
+            if (type == typeof(SchoolTable))
             {
                 if (School.Id.Value == id)
                 {
@@ -68,11 +68,11 @@ namespace CS_projekt.data
         {
             if (School != null)
             {
-                School.RemoveRelative(Id.Value, typeof(Program));
+                School.RemoveRelative(Id.Value, typeof(ProgramTable));
             }
             foreach (var application in Applications.Values)
             {
-                application.RemoveRelative(Id.Value, typeof(Program));
+                application.RemoveRelative(Id.Value, typeof(ProgramTable));
             }
         }
     }

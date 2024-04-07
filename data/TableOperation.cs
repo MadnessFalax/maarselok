@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CS_projekt.data
 {
-    internal static class TableOperation<T> where T : ITable
+    public static class TableOperation<T> where T : ITable
     {
         static public Dictionary<int, T> identity_map = new Dictionary<int, T>();
 
@@ -33,6 +33,7 @@ namespace CS_projekt.data
                 else
                 {
                     dict[row.Id.Value] = row;
+                    dict[row.Id.Value].MapRelations();
                 }
             }
 
@@ -66,6 +67,7 @@ namespace CS_projekt.data
                 else
                 {
                     identity_map[row.Id.Value] = row;
+                    identity_map[row.Id.Value].MapRelations();
                 }
             }
 
@@ -142,15 +144,13 @@ namespace CS_projekt.data
 
         static public void Create(ref Dictionary<int, T> dict, T entity)
         {
-            entity = DBGateway<T>.Create(entity);
-            dict[entity.Id.Value] = entity;
-            dict[entity.Id.Value].MapRelations();
+            DBGateway<T>.Create(entity);
+            RefreshAll();
         }
         static public void Create(T entity)
         {
-            entity = DBGateway<T>.Create(entity);
-            identity_map[entity.Id.Value] = entity;
-            identity_map[entity.Id.Value].MapRelations();
+            DBGateway<T>.Create(entity);
+            RefreshAll();
         }
 
         static public T GetRelated(int id)

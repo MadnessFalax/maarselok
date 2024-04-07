@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CS_projekt.data
 {
-    internal interface ITable
+    public interface ITable
     {
         public int? Id { get; set; }
         public DateTime? LastUpdated { get; set; }

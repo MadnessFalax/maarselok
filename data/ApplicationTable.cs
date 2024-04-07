@@ -8,22 +8,22 @@ using System.Threading.Tasks;
 
 namespace CS_projekt.data
 {
-    internal class Application : ITable
+    public class ApplicationTable : ITable
     {
         public int? Id { get; set; }
         public int? StudentId { get; set; }
-        public Student? Student { get; set; }
+        public StudentTable? Student { get; set; }
         public int? ProgramId { get; set; }
-        public Program? Program { get; set; }
+        public ProgramTable? Program { get; set; }
         public DateTime? Created { get; set; }
         public DateTime? LastUpdated { get; set; }
 
-        public Application()
+        public ApplicationTable()
         {
             Created = DateTime.Now;
         }
 
-        public Application(int studentId, int programId)
+        public ApplicationTable(int studentId, int programId)
         {
             StudentId = studentId;
             ProgramId = programId;
@@ -34,26 +34,26 @@ namespace CS_projekt.data
         {
             if (this.StudentId.HasValue)
             {
-                Student = TableOperation<Student>.GetRelated(StudentId.Value);
+                Student = TableOperation<StudentTable>.GetRelated(StudentId.Value);
                 Student.Applications[Id.Value] = this;
             }
             if (this.ProgramId.HasValue)
             {
-                Program = TableOperation<Program>.GetRelated(ProgramId.Value);
+                Program = TableOperation<ProgramTable>.GetRelated(ProgramId.Value);
                 Program.Applications[Id.Value] = this;
             }
         }
 
         public void RemoveRelative(int id, Type type)
         {
-            if (type == typeof(Program))
+            if (type == typeof(ProgramTable))
             {
                 if (Program.Id.Value == id)
                 {
                     Program = null;
                 }
             }
-            if (type == typeof(Student))
+            if (type == typeof(StudentTable))
             {
                 if (Student.Id.Value == id)
                 {
@@ -66,11 +66,11 @@ namespace CS_projekt.data
         {
             if (Student != null)
             {
-                Student.RemoveRelative(Id.Value, typeof(Application));
+                Student.RemoveRelative(Id.Value, typeof(ApplicationTable));
             }
             if (Program != null)
             {
-                Program.RemoveRelative(Id.Value, typeof(Program));
+                Program.RemoveRelative(Id.Value, typeof(ProgramTable));
             }
         }
     }
