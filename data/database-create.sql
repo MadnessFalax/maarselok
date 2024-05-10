@@ -1,4 +1,4 @@
-create table if not exists "School" (
+create table if not exists "SchoolTable" (
 	"Id" INTEGER primary key autoincrement,
 	"Name" TEXT not null,
 	"Address" TEXT,
@@ -6,7 +6,7 @@ create table if not exists "School" (
 	"LastUpdated" TEXT not null default CURRENT_TIME 
 );
 
-create table if not exists "Program" (
+create table if not exists "ProgramTable" (
 	"Id" INTEGER primary key autoincrement,
 	"SchoolId" INTEGER not null references "School"("Id"),
 	"Name" TEXT not null,
@@ -18,7 +18,7 @@ create table if not exists "Program" (
 	check (ApplicationCount < Capacity)
 );
 
-create table if not exists "Student" (
+create table if not exists "StudentTable" (
 	"Id" INTEGER primary key autoincrement,
 	"Name" TEXT not null,
 	"Address" TEXT not null,
@@ -29,7 +29,7 @@ create table if not exists "Student" (
 	check (ApplicationCount < 3)
 );
 
-create table if not exists "Application" (
+create table if not exists "ApplicationTable" (
 	"Id" INTEGER primary key autoincrement,
 	"StudentId" INTEGER not null references "Student"("Id"), 
 	"ProgramId" INTEGER not null references "Program"("Id"),

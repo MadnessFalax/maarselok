@@ -1,4 +1,5 @@
-﻿using Microsoft.Data.Sqlite;
+﻿using CS_projekt.data.table_attributes;
+using Microsoft.Data.Sqlite;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,37 +24,16 @@ namespace CS_projekt.data
         }
 
         static public void Create(T entity)
-        { 
+        {
 
-            var tableName = typeof(T).Name;
-            var field_dict = new Dictionary<string, KeyValuePair<Type, object>>();
+            var tableName = typeof(T).GetCustomAttribute<TableAttribute>().Name;
             var insert_dict = new Dictionary<string, KeyValuePair<Type, object>>();
-            var field_collection = typeof(T).GetProperties();
+            var field_collection = typeof(T).GetProperties().Where(x => x.IsDefined(typeof(ColumnAttribute))).Where(x => !x.GetCustomAttribute<ColumnAttribute>().Unmanaged);
 
             foreach (var field in field_collection)
             {
-                if (field.PropertyType == typeof(int?) || field.PropertyType == typeof(string) || field.PropertyType == typeof(DateTime?))
-                {
-                    field_dict[field.Name] = new KeyValuePair<Type, object>(field.PropertyType, field.GetValue(entity));
-                    insert_dict[field.Name] = new KeyValuePair<Type, object>(field.PropertyType, field.GetValue(entity));
-                }
+                insert_dict[field.Name] = new KeyValuePair<Type, object>(field.PropertyType, field.GetValue(entity));
             }
-
-            if (insert_dict.ContainsKey("Id"))
-            {
-                insert_dict.Remove("Id");
-            }
-
-            if (insert_dict.ContainsKey("Created"))
-            {
-                insert_dict.Remove("Created");
-            }
-
-            if (insert_dict.ContainsKey("LastUpdated"))
-            {
-                insert_dict.Remove("LastUpdated");
-            }
-
 
             int? id = null;
             using (var connection = new SqliteConnection(connectionString))
@@ -91,70 +71,8 @@ namespace CS_projekt.data
 
                     cmd.CommandText = $"insert into {tableName} ({fields.ToString()}) values ({values.ToString()})";
 
-                    //cmd.Parameters.AddWithValue("@fields", fields.ToString());
-                    //cmd.Parameters.AddWithValue("@values", fields.ToString());
-
                     cmd.ExecuteNonQuery();
 
-                    /*
-                    using var select = connection.CreateCommand();
-                    select.CommandText = $"select * from {tableName} where (Id = @id)";
-                    select.Parameters.AddWithValue("id", id);
-                    using var reader = select.ExecuteReader();
-
-                    T new_entity = (T) typeof(T).GetConstructor(new Type[0]).Invoke(null);
-
-                    while(reader.Read())
-                    {
-                        foreach (var field in field_dict)
-                        {
-                            var name = field.Key;
-                            if (field.Value.Key == typeof(string))
-                            {
-                                if (!reader.IsDBNull(reader.GetOrdinal(name)))
-                                {
-                                    var value = reader.GetString(reader.GetOrdinal(name));
-                                    typeof(T).GetProperty(name).SetValue(new_entity, value);
-                                }
-                                else
-                                {
-                                    var value = (string?) null;
-                                    typeof(T).GetProperty(name).SetValue(new_entity, value);
-                                }
-                            }
-                            else if (field.Value.Key == typeof(int?))
-                            {
-                                if (!reader.IsDBNull(reader.GetOrdinal(name)))
-                                {
-                                    var value = (int)reader.GetInt64(reader.GetOrdinal(name));
-                                    typeof(T).GetProperty(name).SetValue(new_entity, value);
-                                }
-                                else
-                                {
-                                    var value = (int?) null;
-                                    typeof(T).GetProperty(name).SetValue(new_entity, value);
-                                }
-                            }
-                            else if (field.Value.Key == typeof(DateTime?))
-                            {
-                                if (!reader.IsDBNull(reader.GetOrdinal(name)))
-                                {
-                                    var value = (DateTime)reader.GetDateTime(reader.GetOrdinal(name));
-                                    typeof(T).GetProperty(name).SetValue(new_entity, value);
-                                }
-                                else
-                                {
-                                    var value = (DateTime?)null;
-                                    typeof(T).GetProperty(name).SetValue(new_entity, value);
-                                }
-                            }
-                            else
-                            {
-                                throw new Exception("Invalid type?");
-                            }
-                        }
-                    }
-                    */
                     transaction.Commit();
                 }
                 catch
@@ -166,14 +84,9 @@ namespace CS_projekt.data
 
         static public void Delete(T entity)
         {
-            var tableName = typeof(T).Name;
+            var tableName = typeof(T).GetCustomAttribute<TableAttribute>().Name;
             var field_dict = new Dictionary<string, KeyValuePair<Type, object>>();
-            var field_collection = typeof(T).GetProperties();
-
-            foreach (var field in field_collection)
-            {
-                field_dict[field.Name] = new KeyValuePair<Type, object>(field.PropertyType, field.GetValue(entity));
-            }
+            var key = typeof(T).GetProperties().Where(x => x.IsDefined(typeof(PrimaryKeyAttribute))).First().GetValue(entity);
 
             using var connection =  new SqliteConnection(connectionString);
             connection.Open();
@@ -181,7 +94,7 @@ namespace CS_projekt.data
             using var transaction = connection.BeginTransaction(System.Data.IsolationLevel.Serializable);
             using var cmd = connection.CreateCommand();
             cmd.CommandText = $"delete from {tableName} where (Id = @id)";
-            cmd.Parameters.AddWithValue("id", field_dict["Id"].Value);
+            cmd.Parameters.AddWithValue("id", key);
             cmd.ExecuteNonQuery();
 
             transaction.Commit();
@@ -190,16 +103,14 @@ namespace CS_projekt.data
         static public T Read(T entity)
         {
 
-            var tableName = typeof(T).Name;
+            var tableName = typeof(T).GetCustomAttribute<TableAttribute>().Name;
+            var key = typeof(T).GetProperties().Where(x => x.IsDefined(typeof(PrimaryKeyAttribute))).First().GetValue(entity);
             var field_dict = new Dictionary<string, KeyValuePair<Type, object>>();
-            var field_collection = typeof(T).GetProperties();
+            var field_collection = typeof(T).GetProperties().Where(x => x.IsDefined(typeof(ColumnAttribute)));
 
             foreach (var field in field_collection)
             {
-                if (field.PropertyType == typeof(string) || field.PropertyType == typeof(int?) || field.PropertyType == typeof(DateTime?))
-                {
-                    field_dict[field.Name] = new KeyValuePair<Type, object>(field.PropertyType, field.GetValue(entity));
-                }
+                field_dict[field.Name] = new KeyValuePair<Type, object>(field.PropertyType, field.GetValue(entity));
             }
 
             using var connection = new SqliteConnection(connectionString);
@@ -207,7 +118,7 @@ namespace CS_projekt.data
             using var transaction = connection.BeginTransaction(System.Data.IsolationLevel.Serializable);
             using var cmd = connection.CreateCommand();
             cmd.CommandText = $"select * from {tableName} where (Id = @id)";
-            cmd.Parameters.AddWithValue("id", field_dict["Id"].Value);
+            cmd.Parameters.AddWithValue("id", key);
 
             using var reader = cmd.ExecuteReader();
 
@@ -270,16 +181,13 @@ namespace CS_projekt.data
 
         static public List<T> ReadAll()
         {
-            var tableName = typeof(T).Name;
+            var tableName = typeof(T).GetCustomAttribute<TableAttribute>().Name;
             var field_dict = new Dictionary<string, KeyValuePair<Type, object>>();
-            var field_collection = typeof(T).GetProperties();
+            var field_collection = typeof(T).GetProperties().Where(x => x.IsDefined(typeof(ColumnAttribute)));
 
             foreach (var field in field_collection)
             {
-                if (field.PropertyType == typeof(string) || field.PropertyType == typeof(int?) || field.PropertyType == typeof(DateTime?))
-                {
                     field_dict[field.Name] = new KeyValuePair<Type, object>(field.PropertyType, null);
-                }
             }
 
             using var connection = new SqliteConnection(connectionString);
@@ -355,32 +263,18 @@ namespace CS_projekt.data
 
         static public T Update(T entity)
         {
-            var tableName = typeof(T).Name;
+            var tableName = typeof(T).GetCustomAttribute<TableAttribute>().Name;
+            var entity_id = typeof(T).GetProperties().Where(x => x.IsDefined(typeof(PrimaryKeyAttribute))).First().GetValue(entity);
             var field_dict = new Dictionary<string, KeyValuePair<Type, object>>();
             var update_dict = new Dictionary<string, KeyValuePair<Type, object>>();
-            var field_collection = typeof(T).GetProperties();
+            var field_collection = typeof(T).GetProperties().Where(x => x.IsDefined(typeof(ColumnAttribute)));
 
             foreach (var field in field_collection)
             {
-                if (field.PropertyType == typeof(int?) || field.PropertyType == typeof(string) || field.PropertyType == typeof(DateTime?))
-                {
-                    field_dict[field.Name] = new KeyValuePair<Type, object>(field.PropertyType, field.GetValue(entity));
+                field_dict[field.Name] = new KeyValuePair<Type, object>(field.PropertyType, field.GetValue(entity));
+                if (!field.GetCustomAttribute<ColumnAttribute>().Unmanaged)
                     update_dict[field.Name] = new KeyValuePair<Type, object>(field.PropertyType, field.GetValue(entity));
-                }
             }
-
-            var entity_id = field_dict["Id"].Value;
-
-            if (update_dict.ContainsKey("Id"))
-            {
-                update_dict.Remove("Id");
-            }
-
-            if (update_dict.ContainsKey("Created"))
-            {
-                update_dict.Remove("Created");
-            }
-
 
             using var connection = new SqliteConnection(connectionString);
             connection.Open();

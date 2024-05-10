@@ -6,17 +6,26 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using CS_projekt.data.table_attributes;
 
 namespace CS_projekt.data
 {
+    [Table("StudentTable")]
     public class StudentTable : ITable
     {
+        [Column("Id", true), PrimaryKey]
         public int? Id { get; set; }
+        [Column("Name")]
         public string? Name { get; set; }
+        [Column("Address")]
         public string? Address { get; set; }
+        [Column("Email")]
         public string? Email { get; set; }
+        [Column("ApplicationCount")]
         public int? ApplicationCount { get; set; }
+        [Column("Created", true)]
         public DateTime? Created { get; set; }
+        [Column("LastUpdated", true)]
         public DateTime? LastUpdated { get; set; }
         public Dictionary<int, ApplicationTable> Applications = new Dictionary<int, ApplicationTable>();
 
