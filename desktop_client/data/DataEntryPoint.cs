@@ -9,7 +9,11 @@ using System.Threading.Tasks;
 namespace CS_projekt.data
 {
 
-    
+    using TOStudent = CS_projekt.data.TableOperation<StudentTable>;
+    using TOSchool = CS_projekt.data.TableOperation<SchoolTable>;
+    using TOApplication = CS_projekt.data.TableOperation<ApplicationTable>;
+    using TOProgram = CS_projekt.data.TableOperation<ProgramTable>;
+
 
     public class DataEntryPoint
     {
@@ -35,8 +39,6 @@ namespace CS_projekt.data
                 cmd.ExecuteNonQuery();
             }
             */
-
-
         }
 
         static public void initDB()
@@ -49,15 +51,15 @@ namespace CS_projekt.data
 
         static public void loadDB()
         {
-            TableOperation<StudentTable>.RefreshAll();
-            TableOperation<SchoolTable>.RefreshAll();
-            TableOperation<ProgramTable>.RefreshAll();
-            TableOperation<ApplicationTable>.RefreshAll();
+            TOStudent.RefreshAll();
+            TOSchool.RefreshAll();
+            TOProgram.RefreshAll();
+            TOApplication.RefreshAll();
 
-            StudentMap = TableOperation<StudentTable>.identity_map;
-            SchoolMap = TableOperation<SchoolTable>.identity_map;
-            ProgramMap  = TableOperation<ProgramTable>.identity_map;
-            ApplicationMap = TableOperation<ApplicationTable>.identity_map;
+            StudentMap = TOStudent.identity_map;
+            SchoolMap = TOSchool.identity_map;
+            ProgramMap  = TOProgram.identity_map;
+            ApplicationMap = TOApplication.identity_map;
         }
 
     }

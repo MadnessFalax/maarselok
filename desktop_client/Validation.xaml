@@ -1,0 +1,31 @@
+﻿<UserControl x:Class="desktop_client.Validation"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:i="clr-namespace:WPF_Icons;assembly=WPF-Icons"
+             xmlns:local="clr-namespace:desktop_client"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <Style x:Key="StateStyle" TargetType="i:Icon">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Control.IsValid}" Value="true">
+                    <Setter Property="Kind" Value="icon_check_circle"></Setter>
+                    <Setter Property="Color" Value="Green"></Setter>
+                    <Setter Property="Size" Value="20"></Setter>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Control.IsValid}" Value="false">
+                    <Setter Property="Kind" Value="icon_cancel"></Setter>
+                    <Setter Property="Color" Value="Red"></Setter>
+                    <Setter Property="Size" Value="20"></Setter>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+    </UserControl.Resources>
+    <Grid>
+        <i:Icon Style="{StaticResource StateStyle}">
+            
+        </i:Icon>
+    </Grid>
+</UserControl>

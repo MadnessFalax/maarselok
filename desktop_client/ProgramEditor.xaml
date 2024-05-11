@@ -7,6 +7,13 @@
         mc:Ignorable="d"
         Title="ProgramEditor" Height="450" Width="800">
     <Grid>
-        
+        <StackPanel>
+            <local:TextEntry x:Name="TestEntry" Grid.Row="0">
+            
+            </local:TextEntry>
+            <local:TextEntry x:Name="TestEntry2" Grid.Row="1">
+
+            </local:TextEntry>
+        </StackPanel>
     </Grid>
 </Window>

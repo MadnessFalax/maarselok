@@ -4,15 +4,22 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CS_projekt.data.table_attributes;
 
 namespace CS_projekt.data
 {
+    [Table("SchoolTable")]
     public class SchoolTable : ITable
     {
+        [Column("Id", true), PrimaryKey]
         public int? Id { get; set; }
+        [Column("Name")]
         public string? Name { get; set; }
+        [Column("Address")]
         public string? Address { get; set; }
+        [Column("Created", true)]
         public DateTime? Created { get; set; }
+        [Column("LastUpdated", true)]
         public DateTime? LastUpdated { get; set; }
         public Dictionary<int, ProgramTable> Programs = new Dictionary<int, ProgramTable>();
 

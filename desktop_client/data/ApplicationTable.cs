@@ -5,17 +5,26 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CS_projekt.data.table_attributes;
 
 namespace CS_projekt.data
 {
+    [Table("ApplicationTable")]
     public class ApplicationTable : ITable
     {
+        [Column("Id", true), PrimaryKey]
         public int? Id { get; set; }
+        [Column("StudentId"), ForeignKey("Student")]
         public int? StudentId { get; set; }
+        [ForeignTable("Student")]
         public StudentTable? Student { get; set; }
+        [Column("ProgramId"), ForeignKey("Program")]
         public int? ProgramId { get; set; }
+        [ForeignTable("Program")]
         public ProgramTable? Program { get; set; }
+        [Column("Created", true)]
         public DateTime? Created { get; set; }
+        [Column("LastUpdated", true)]
         public DateTime? LastUpdated { get; set; }
 
         public ApplicationTable()

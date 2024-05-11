@@ -15,14 +15,13 @@ using System.Windows.Shapes;
 namespace desktop_client
 {
     /// <summary>
-    /// Interaction logic for ProgramEditor.xaml
+    /// Interaction logic for ChooseWindow.xaml
     /// </summary>
-    public partial class ProgramEditor : Window
+    public partial class ChooseWindow : Window
     {
-        public ProgramEditor()
+        public ChooseWindow()
         {
             InitializeComponent();
-            DataContext = this;
         }
     }
 }

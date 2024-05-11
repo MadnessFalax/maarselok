@@ -279,7 +279,8 @@ namespace desktop_client
 
         private void ProgramEditCallback(object sender, RoutedEventArgs e)
         {
-
+            var dialog = new ProgramEditor();
+            dialog.ShowDialog();
         }
 
         private void ProgramCreateCallback(object sender, RoutedEventArgs e)
