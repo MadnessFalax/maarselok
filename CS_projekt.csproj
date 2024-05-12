@@ -12,10 +12,13 @@
   <ItemGroup>
     <Compile Remove="desktop_client\**" />
     <Compile Remove="presentation\**" />
+    <Compile Remove="web_client\**" />
     <EmbeddedResource Remove="desktop_client\**" />
     <EmbeddedResource Remove="presentation\**" />
+    <EmbeddedResource Remove="web_client\**" />
     <None Remove="desktop_client\**" />
     <None Remove="presentation\**" />
+    <None Remove="web_client\**" />
   </ItemGroup>
 
   <ItemGroup>
