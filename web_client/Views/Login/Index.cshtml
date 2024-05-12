@@ -1,0 +1,45 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+@model LoginModel
+@await Html.PartialAsync("NavbarComponent", new NavbarModel() {IsAuthorized = Model.IsAuthorized})
+@using (Html.BeginForm("Index", "Login", FormMethod.Post))
+{
+    <form>
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-12 col-md-6">
+                  <div class="mb-3">
+                    <label for="Email" class="form-label">Email</label>
+                    <input type="email" class="form-control" id="Email" aria-describedby="emailHelp" Name="Email">
+                  </div>
+                </div>
+                <div class="col-xs-12 col-md-6">
+                  <div class="mb-3">
+                    <label for="Password" class="form-label">Password</label>
+                    <input type="password" class="form-control" id="PassWord" name="Password">
+                  </div>
+                </div>
+            </div>
+            @if (Model.InvalidLoginData)
+            {
+                <div class="row">
+                    <div class="d-flex flex-row-reverse">
+                        <p style="color: red">Invalid login credentials!</p>
+                    </div>
+                </div>
+            }
+            <div class="row">
+                <div class="col-12">
+                    <div class="d-flex flex-row-reverse">
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+    
+}
