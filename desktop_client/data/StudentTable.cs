@@ -21,6 +21,8 @@ namespace CS_projekt.data
         public string? Address { get; set; }
         [Column("Email")]
         public string? Email { get; set; }
+        [Column("Password")]
+        public string? Password { get; set; }
         [Column("ApplicationCount")]
         public int? ApplicationCount { get; set; }
         [Column("Created", true)]
@@ -34,7 +36,7 @@ namespace CS_projekt.data
             LastUpdated = DateTime.Now;
         }
 
-        public StudentTable(string name, string address, string email)
+        public StudentTable(string name, string address, string email, string password)
         {
             Name = name;
             Address = address;
@@ -42,7 +44,7 @@ namespace CS_projekt.data
             ApplicationCount = 0;
             Created = DateTime.Now;
             LastUpdated = DateTime.Now;
-
+            Password = password;
         }
 
         public void MapRelations()
