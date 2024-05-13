@@ -363,3 +363,4 @@ MigrationBackup/
 FodyWeavers.xsd
 
 mydb.db
+/web_client/mydb.db
