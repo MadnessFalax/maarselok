@@ -5,7 +5,7 @@
 }
 
 @model ProfileModel;
-@await Html.PartialAsync("NavbarComponent", new NavbarModel() {IsAuthorized = Model.IsAuthorized})
+@await Html.PartialAsync("NavbarComponent", new GlobalModel() {IsAuthorized = Model.IsAuthorized})
 
 <div class="container">
     <div class="row">

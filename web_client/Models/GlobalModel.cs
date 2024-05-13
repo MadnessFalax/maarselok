@@ -1,6 +1,6 @@
 ﻿namespace web_client.Models
 {
-    public class NavbarModel
+    public class GlobalModel
     {
         public bool IsAuthorized { get; set; }
     }

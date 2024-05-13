@@ -1,7 +1,6 @@
 ﻿namespace web_client.Models
 {
-    public class HomeModel
+    public class HomeModel : GlobalModel
     {
-        public bool IsAuthorized { get; set; }
     }
 }

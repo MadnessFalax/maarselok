@@ -1,0 +1,39 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+@model ProgramsModel
+@await Html.PartialAsync("NavbarComponent", new GlobalModel() {IsAuthorized = Model.IsAuthorized})
+
+<h2>Study programs for @Model.School.Name</h2>
+
+@if (!Model.ActionStatus.Success)
+{
+    <p class="fw-bold" style="color: red;">@Model.ActionStatus.Message</p>
+}
+
+@foreach (var program in Model.School.Programs)
+{
+    <div class="d-flex justify-content-between">
+        <h3>@program.Value.Name</h3>
+        <p>@program.Value.ApplicationCount / @program.Value.Capacity</p>
+    </div>
+    <p>@program.Value.Description</p>
+    <div class="d-flex flex-row-reverse">
+    @if (Model.IsAuthorized)
+    {
+        @if (!Model.Student.Applications.ToList().Select(x => x.Value.Program.Id.Value).Any(x => x == program.Value.Id.Value))
+        {
+                <a href="@Url.Action("Apply", "Schools", new { id = program.Value.Id })" class="btn btn-primary">Apply</a>
+        }
+        else
+        {
+                <p class="btn btn-outline-primary" disabled>Applied</p>        
+        }
+            
+    }
+    </div>
+    <hr />
+}

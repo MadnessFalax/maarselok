@@ -1,0 +1,17 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+@model ApplicationsModel;
+@await Html.PartialAsync("NavbarComponent", new GlobalModel() {IsAuthorized = Model.IsAuthorized})
+@foreach (var app in Model.Student.Applications.ToList()) {
+    <h3>@app.Value.Program.Name at @app.Value.Program.School.Name</h3>
+    <p>Current number of applications: @app.Value.Program.ApplicationCount / @app.Value.Program.Capacity</p>
+    <p>Description: @app.Value.Program.Description</p>
+    <div class="d-flex flex-row-reverse">
+        <a href="@Url.Action("Delete", "Applications", new { id = app.Value.Id })" class="btn btn-danger">Cancel</a>
+    </div>
+    <hr />
+}

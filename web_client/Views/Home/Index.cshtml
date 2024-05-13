@@ -3,7 +3,7 @@
 }
 
 @model HomeModel;
-@await Html.PartialAsync("NavbarComponent", new NavbarModel() {IsAuthorized = Model.IsAuthorized})
+@await Html.PartialAsync("NavbarComponent", new GlobalModel() {IsAuthorized = Model.IsAuthorized})
 <div class="text-center">
     <h1 class="display-4">Welcome</h1>
     <p>This web is dedicated to schools and applications. You can browse available schools and their programs. You can also log in and submit application directly from this web. Good luck!</p>

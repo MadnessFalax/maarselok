@@ -4,7 +4,16 @@ namespace web_client.Models
 {
     public class DBAccess
     {
-        public Dictionary<int, ApplicationTable> ApplicationMap { get; set; }
+        public Dictionary<int, ApplicationTable> ApplicationMap { 
+            get
+            {
+                return DataEntryPoint.ApplicationMap;
+            }
+            set
+            {
+                ApplicationMap = value;
+            }
+        }
         public List<ApplicationTable> ApplicationList { 
             get 
             {
@@ -33,7 +42,17 @@ namespace web_client.Models
             set { }
         }
 
-        public Dictionary<int, SchoolTable> SchoolMap { get; set; }
+        public Dictionary<int, SchoolTable> SchoolMap
+        {
+            get
+            {
+                return DataEntryPoint.SchoolMap;
+            }
+            set
+            {
+                SchoolMap = value;
+            }
+        }
         public List<SchoolTable> SchoolList
         {
             get
@@ -43,7 +62,17 @@ namespace web_client.Models
             set { }
         }
 
-        public Dictionary<int, ProgramTable> ProgramMap { get; set; }
+        public Dictionary<int, ProgramTable> ProgramMap
+        {
+            get
+            {
+                return DataEntryPoint.ProgramMap;
+            }
+            set
+            {
+                ProgramMap = value;
+            }
+        }
         public List<ProgramTable> ProgramList
         {
             get

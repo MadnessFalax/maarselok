@@ -5,10 +5,17 @@
 }
 
 @model LoginModel
-@await Html.PartialAsync("NavbarComponent", new NavbarModel() {IsAuthorized = Model.IsAuthorized})
+@await Html.PartialAsync("NavbarComponent", new GlobalModel() {IsAuthorized = Model.IsAuthorized})
 @using (Html.BeginForm("Index", "Login", FormMethod.Post))
 {
     <form>
+        @if (Model.Message != null)
+        {
+            @if (!Model.Message.Equals(""))
+            {
+                <div class="alert alert-primary" role="alert">@Model.Message</div>
+            }
+        }
         <div class="container">
             <div class="row">
                 <div class="col-xs-12 col-md-6">
@@ -39,6 +46,9 @@
                     </div>
                 </div>
             </div>
+        </div>
+        <div class="d-flex flex-row-reverse">
+            <p>No account? <a href="@Url.Action("Registration", "Login")">Register now!</a></p>
         </div>
     </form>
     
