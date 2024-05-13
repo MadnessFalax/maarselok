@@ -35,7 +35,6 @@ namespace CS_projekt.data
                 insert_dict[field.Name] = new KeyValuePair<Type, object>(field.PropertyType, field.GetValue(entity));
             }
 
-            int? id = null;
             using (var connection = new SqliteConnection(connectionString))
             {
                 connection.Open();
