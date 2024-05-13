@@ -44,6 +44,17 @@ namespace CS_projekt.data
             }
         }
 
+        static public void ForceRefreshAll()
+        {
+            var tmp_list = DBGateway<T>.ReadAll();
+
+            foreach (var row in tmp_list)
+            { 
+                identity_map[row.Id.Value] = row;
+                identity_map[row.Id.Value].MapRelations();
+            }
+        }
+
         static public void RefreshAll()
         {
             List<int> ids_to_refresh = new List<int>();
