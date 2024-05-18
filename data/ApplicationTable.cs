@@ -6,25 +6,26 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CS_projekt.data.table_attributes;
+using CS_projekt.data.view_attributes;
 
 namespace CS_projekt.data
 {
-    [Table("ApplicationTable")]
+    [Table("ApplicationTable"), ViewName("Applications")]
     public class ApplicationTable : ITable
     {
-        [Column("Id", true), PrimaryKey]
+        [Column("Id", true), PrimaryKey, ViewName("ID")]
         public int? Id { get; set; }
         [Column("StudentId"), ForeignKey("Student")]
         public int? StudentId { get; set; }
-        [ForeignTable("Student")]
+        [ForeignTable("Student"), ViewName("Student")]
         public StudentTable? Student { get; set; }
         [Column("ProgramId"), ForeignKey("Program")]
         public int? ProgramId { get; set; }
-        [ForeignTable("Program")]
+        [ForeignTable("Program"), ViewName("Program")]
         public ProgramTable? Program { get; set; }
-        [Column("Created", true)]
+        [Column("Created", true), ViewName("Created")]
         public DateTime? Created { get; set; }
-        [Column("LastUpdated", true)]
+        [Column("LastUpdated", true), ViewName("Last Updated")]
         public DateTime? LastUpdated { get; set; }
 
         public ApplicationTable()
