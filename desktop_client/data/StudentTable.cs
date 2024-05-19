@@ -7,27 +7,28 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using CS_projekt.data.table_attributes;
+using CS_projekt.data.view_attributes;
 
 namespace CS_projekt.data
 {
-    [Table("StudentTable")]
+    [Table("StudentTable"), ViewName("Students")]
     public class StudentTable : ITable
     {
-        [Column("Id", true), PrimaryKey]
+        [Column("Id", true), PrimaryKey, ViewName("ID")]
         public int? Id { get; set; }
-        [Column("Name")]
+        [Column("Name"), ViewName("Name")]
         public string? Name { get; set; }
-        [Column("Address")]
+        [Column("Address"), ViewName("Address")]
         public string? Address { get; set; }
-        [Column("Email")]
+        [Column("Email"), ViewName("Email")]
         public string? Email { get; set; }
-        [Column("Password")]
+        [Column("Password"), ViewName("Password")]
         public string? Password { get; set; }
-        [Column("ApplicationCount")]
+        [Column("ApplicationCount"), ViewName("Application Count")]
         public int? ApplicationCount { get; set; }
-        [Column("Created", true)]
+        [Column("Created", true), ViewName("Created")]
         public DateTime? Created { get; set; }
-        [Column("LastUpdated", true)]
+        [Column("LastUpdated", true), ViewName("Last Updated")]
         public DateTime? LastUpdated { get; set; }
         public Dictionary<int, ApplicationTable> Applications = new Dictionary<int, ApplicationTable>();
 

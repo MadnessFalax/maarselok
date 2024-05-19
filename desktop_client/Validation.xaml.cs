@@ -20,7 +20,7 @@ namespace desktop_client
     /// Interaction logic for UserControl1.xaml
     /// </summary>
     
-    public class ValidationControl : INotifyPropertyChanged
+    public class ValidationModel : INotifyPropertyChanged
     {
         private bool isValid;
         public bool IsValid { 
@@ -34,7 +34,7 @@ namespace desktop_client
             } 
         }
 
-        public ValidationControl()
+        public ValidationModel()
         {
             IsValid = false;
         }
@@ -49,12 +49,12 @@ namespace desktop_client
 
     public partial class Validation : UserControl
     {
-        public ValidationControl Control { get; set; }
+        public ValidationModel Model { get; set; }
         public Validation()
         {
             InitializeComponent();
-            DataContext = this;
-            Control = new ValidationControl();
+            Model = new ValidationModel();
+            DataContext = Model;
         }
     }
 }

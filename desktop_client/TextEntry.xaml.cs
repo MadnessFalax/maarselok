@@ -21,7 +21,7 @@ namespace desktop_client
     /// Interaction logic for UserControl1.xaml
     /// </summary>
 
-    public class TextEntryControl : INotifyPropertyChanged
+    public class TextEntryModel : INotifyPropertyChanged
     {
         private string text;
         private string label;
@@ -48,13 +48,13 @@ namespace desktop_client
                 if (text != value) 
                 {
                     text = value;
-                    val_ref.Control.IsValid = regex.IsMatch(text);
+                    val_ref.Model.IsValid = regex.IsMatch(text);
                     OnPropertyChanged(nameof(Text));
                 }
             }
         }
 
-        public TextEntryControl(Validation validation) 
+        public TextEntryModel(Validation validation) 
         {
             text = "";
             label = "Label Placeholder";
@@ -72,28 +72,33 @@ namespace desktop_client
 
     public partial class TextEntry : UserControl
     {
-        public TextEntryControl Control { get; set; }
+        public TextEntryModel Model { get; set; }
 
         public TextEntry()
         {
             InitializeComponent();
-            DataContext = this;
-            Control = new TextEntryControl(TextValidation);
+            Model = new TextEntryModel(TextValidation);
+            DataContext = Model;
         }
 
         public void SetLabel(string labelText)
         {
-            Control.Label = labelText;
+            Model.Label = labelText;
+        }
+
+        public void SetText(string entryText)
+        {
+            Model.Text = entryText;
         }
 
         public void SetRegex(string regexPattern)
         {
-            Control.regex = new Regex(regexPattern);
+            Model.regex = new Regex(regexPattern);
         }
 
         public void SetRegex(Regex regex)
         {
-            Control.regex = regex;
+            Model.regex = regex;
         }
     }
 }

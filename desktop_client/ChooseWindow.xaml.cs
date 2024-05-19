@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,10 +19,24 @@ namespace desktop_client
     /// <summary>
     /// Interaction logic for ChooseWindow.xaml
     /// </summary>
+    /// 
+    public class ChooseWindowModel
+    {
+        public ObservableCollection<(int, string)> Selection { get; set; }
+
+        public ChooseWindowModel(List<(int, string)> selection)
+        {
+            Selection = new ObservableCollection<(int, string)>(selection);
+        }
+    }
     public partial class ChooseWindow : Window
     {
-        public ChooseWindow()
+        public ChooseWindowModel Model { get; set; }
+
+        public ChooseWindow(List<(int, string)> selection)
         {
+            Model = new ChooseWindowModel(selection);
+            DataContext = Model;
             InitializeComponent();
         }
     }

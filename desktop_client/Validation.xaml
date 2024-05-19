@@ -10,12 +10,12 @@
     <UserControl.Resources>
         <Style x:Key="StateStyle" TargetType="i:Icon">
             <Style.Triggers>
-                <DataTrigger Binding="{Binding Control.IsValid}" Value="true">
+                <DataTrigger Binding="{Binding IsValid}" Value="true">
                     <Setter Property="Kind" Value="icon_check_circle"></Setter>
                     <Setter Property="Color" Value="Green"></Setter>
                     <Setter Property="Size" Value="20"></Setter>
                 </DataTrigger>
-                <DataTrigger Binding="{Binding Control.IsValid}" Value="false">
+                <DataTrigger Binding="{Binding IsValid}" Value="false">
                     <Setter Property="Kind" Value="icon_cancel"></Setter>
                     <Setter Property="Color" Value="Red"></Setter>
                     <Setter Property="Size" Value="20"></Setter>

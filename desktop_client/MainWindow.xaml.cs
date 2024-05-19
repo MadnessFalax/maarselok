@@ -279,13 +279,12 @@ namespace desktop_client
 
         private void ProgramEditCallback(object sender, RoutedEventArgs e)
         {
-            var dialog = new ProgramEditor();
-            dialog.ShowDialog();
         }
 
         private void ProgramCreateCallback(object sender, RoutedEventArgs e)
         {
-
+            var dialog = new GenericEditor(typeof(ProgramTable), new ProgramTable(0, "", "", 0));
+            dialog.ShowDialog();
         }
 
         private void ProgramSearchCallback(object sender, RoutedEventArgs e)

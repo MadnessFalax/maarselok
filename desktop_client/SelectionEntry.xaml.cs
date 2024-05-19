@@ -22,7 +22,7 @@ namespace desktop_client
     /// </summary>
     /// 
 
-    public class SelectionEntryControl
+    public class SelectionEntryModel
     {
         private string text;
         private int selected_index;
@@ -49,12 +49,12 @@ namespace desktop_client
                 if (value >= selection.Count)
                 {
                     text = "";
-                    val_ref.Control.IsValid = false;
+                    val_ref.Model.IsValid = false;
                 }
                 else
                 {
                     text = selection[value].Item2;
-                    val_ref.Control.IsValid = true;
+                    val_ref.Model.IsValid = true;
                     SelectedId = selection[value].Item1;
                 }
             }
@@ -86,7 +86,7 @@ namespace desktop_client
             }
         }
 
-        public SelectionEntryControl(Validation validation)
+        public SelectionEntryModel(Validation validation)
         {
             selected_index = 0;
             selection = new List<(int, string)>();
@@ -105,28 +105,30 @@ namespace desktop_client
 
     public partial class SelectionEntry : UserControl
     {
-        public SelectionEntryControl Control { get; set; }
+        public SelectionEntryModel Model { get; set; }
 
         public SelectionEntry()
         {
             InitializeComponent();
             DataContext = this;
-            Control = new SelectionEntryControl(TextValidation);
+            Model = new SelectionEntryModel(TextValidation);
         }
 
         public void SetLabel(string labelText)
         {
-            Control.Label = labelText;
+            Model.Label = labelText;
         }
 
         // tuples of ID and Name
         public void SetSelection(List<(int, string)> sel)
         {
-            Control.Selection = sel;
+            Model.Selection = sel;
         }
 
         private void ChooseCallback(object sender, RoutedEventArgs e)
         {
+            var dialog = new ChooseWindow(Model.Selection);
+            dialog.ShowDialog();
 
         }
     }
