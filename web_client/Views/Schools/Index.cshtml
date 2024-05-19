@@ -6,16 +6,82 @@
 
 @model SchoolsModel
 @await Html.PartialAsync("NavbarComponent", new GlobalModel() {IsAuthorized = Model.IsAuthorized})
+<input type="hidden" id="modelData" value='@Json.Serialize(Model)'/>
+<div class="d-flex flex-row-reverse py-3">
+    <button class="btn btn-primary" id="search-button">Search</button>
+    <script>
+        const createElement = (tag, attributes, ...children) => {
+            let element = document.createElement(tag);
+            for (let key in attributes) {
+                element.setAttribute(key, attributes[key]);
+            }
+            children.forEach(child => {
+                if (typeof child === "string") {
+                    element.appendChild(document.createTextNode(child));
+                } else {
+                    element.appendChild(child);
+                }
+            });
+            return element;
+        }
 
+        const search_button = document.getElementById('search-button');
+        search_button.onclick = () => {
+            let search_query = document.getElementById('search-input').value;
+            
+            let xhr = new XMLHttpRequest();
+            xhr.open('GET', '/Schools/Search?query=' + encodeURIComponent(search_query), true);
+
+            xhr.onreadystatechange = () => {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    let data = JSON.parse(xhr.responseText);
+                    
+                    console.log(data);
+
+                    let model_data = JSON.parse(document.getElementById('modelData').value);
+
+                    console.log(model_data);
+
+                    let filtered = model_data.schools.filter((school) => data.includes(school.id))
+
+                    console.log(filtered);
+
+                    let parent = document.getElementById("render-data");
+                    parent.innerHTML = '';
+                    let template_collection = ``;
+                    for (let school of filtered) {
+                        let template = `
+                            <h3>${school.name}</h3>
+                            <div class="d-flex justify-content-between">
+                                <p>${school.address}</p>
+                            </div>
+                            <div class="d-flex flex-row-reverse">
+                                <a href="Schools/Programs/${school.id}" class="btn btn-primary">Programs</a>
+                            </div>
+                            <hr />
+                        `;
+                        template_collection += template;
+                    }
+                    parent.innerHTML = template_collection;
+                }
+            }
+            xhr.send();
+        }
+
+    </script>
+    <input type="text" class="form-control" id="search-input" placeholder="Enter school name"></input>
+</div>
+
+<div id="render-data">
 @foreach (var school in Model.Schools)
 {
     <h3>@school.Name</h3>
     <div class="d-flex justify-content-between">
         <p>@school.Address</p>
-        <p>Total study programs: @school.Programs.Count</p>
     </div>
     <div class="d-flex flex-row-reverse">
         <a href="@Url.Action("Programs", "Schools", new { id = school.Id })" class="btn btn-primary">Programs</a>
     </div>
     <hr />
 }
+</div>

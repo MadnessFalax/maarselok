@@ -17,7 +17,7 @@
                             <input type="text" class="form-control" id="Name" Name="Name">
                         @if (!Model.NameOk)
                         {
-                            <p class="fw-bold" style="color: red;">Invalid formate</p>
+                            <p class="fw-bold" style="color: red;">Invalid name formate: Starting with uppercase, only letter, space, single quotation and '-'</p>
                         }
                     </div>
                     </div>
@@ -27,7 +27,7 @@
                             <input type="text" class="form-control" id="Address" name="Address">
                         @if (!Model.AddressOk)
                         {
-                            <p class="fw-bold" style="color: red;">Invalid formate</p>
+                            <p class="fw-bold" style="color: red;">Invalid address formate</p>
                         }
                       </div>
                     </div>
@@ -39,7 +39,7 @@
                             <input type="email" class="form-control" id="Email" aria-describedby="emailHelp" Name="Email">
                         @if (!Model.EmailOk)
                         {
-                            <p class="fw-bold" style="color: red;">Invalid formate</p>
+                            <p class="fw-bold" style="color: red;">Invalid email formate</p>
                         }
                         </div>
                     </div>
@@ -49,7 +49,7 @@
                             <input type="password" class="form-control" id="Password" name="Password">
                         @if (!Model.PasswordOk)
                         {
-                            <p class="fw-bold" style="color: red;">Invalid formate</p>
+                            <p class="fw-bold" style="color: red;">Invalid password formate: allowed are letters, numbers and following symbols: ./?!,%=+*'-_&amp;</p>
                         }
                         </div>
                     </div>

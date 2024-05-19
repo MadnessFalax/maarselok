@@ -35,6 +35,21 @@ namespace web_client.Controllers
             return View(new ProgramsModel() { IsAuthorized = IsLoggedIn, School = _access.SchoolMap[id], Student = IsLoggedIn ? _access.StudentMap[UserId.Value] : null, ActionStatus = new ActionStatusModel() { Success = successful, Message = "You are at maximum number of applications!" } });
         }
 
+        [HttpGet]
+        public JsonResult Search(string query)
+        {
+            if (query == null)
+            {
+                var result = _access.SchoolList.Select(x => x.Id).ToList();
+                return Json(result);
+            }
+            else
+            {
+                var result = _access.SchoolList.Where(x => x.Name.Contains(query)).Select(x => x.Id).ToList();
+                return Json(result);
+            }
+        }
+
         public IActionResult Apply(int id)
         {
             bool IsLoggedIn = (bool)HttpContext.Items["IsAuthorized"];

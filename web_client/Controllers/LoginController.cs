@@ -11,7 +11,7 @@ namespace web_client.Controllers
 
         private Regex name_regex = new Regex(@"^[A-Z][a-zA-Z '-]+$");
         private Regex address_regex = new Regex(@"^[a-zA-Z ,'0-9-\.]+$");
-        private Regex email_regex = new Regex(@"^[a-zA-Z0-9.]+[@][a-zA-Z0-9_]+[.][a-z]{2,5}$");
+        private Regex email_regex = new Regex(@"^[a-zA-Z0-9.]+[@][a-zA-Z0-9_]+[\.][a-z]{2,5}$");
         private Regex password_regex = new Regex(@"^[a-zA-Z0-9\./?!,%=+*'_@-]+$");
 
         public LoginController(DBAccess dbService)

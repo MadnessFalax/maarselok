@@ -5,29 +5,30 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CS_projekt.data.table_attributes;
+using CS_projekt.data.view_attributes;
 
 namespace CS_projekt.data
 {
-    [Table("ProgramTable")]
+    [Table("ProgramTable"), ViewName("Programs")]
     public class ProgramTable : ITable
     {
-        [Column("Id", true), PrimaryKey]
+        [Column("Id", true), PrimaryKey, ViewName("ID")]
         public int? Id { get; set; }
         [Column("SchoolId"), ForeignKey("School")]
         public int? SchoolId { get; set; }
-        [ForeignTable("School")]
+        [ForeignTable("School"), ViewName("School")]
         public SchoolTable? School { get; set; }
-        [Column("Name")]
+        [Column("Name"), ViewName("Name")]
         public string? Name { get; set; }
-        [Column("Description")]
+        [Column("Description"), ViewName("Description")]
         public string? Description { get; set; }
-        [Column("Capacity")]
+        [Column("Capacity"), ViewName("Capacity")]
         public int? Capacity { get; set; }
-        [Column("ApplicationCount")]
+        [Column("ApplicationCount"), ViewName("Application Count")]
         public int? ApplicationCount { get; set; }
-        [Column("Created", true)]
+        [Column("Created", true), ViewName("Created")]
         public DateTime? Created { get; set; }
-        [Column("LastUpdated", true)]
+        [Column("LastUpdated", true), ViewName("Last Updated")]
         public DateTime? LastUpdated { get; set; }
         public Dictionary<int, ApplicationTable> Applications = new Dictionary<int, ApplicationTable>();
 
