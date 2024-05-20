@@ -75,7 +75,7 @@ namespace desktop_client
         public GenericEditor()
         {
             throw new NotImplementedException();
-            InitializeComponent();
+            //InitializeComponent();
         }
 
         public GenericEditor(Type t, object editorInstance)

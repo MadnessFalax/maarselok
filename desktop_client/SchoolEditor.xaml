@@ -7,6 +7,24 @@
         mc:Ignorable="d"
         Title="SchoolEditor" Height="450" Width="800">
     <Grid>
-        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*">
+
+            </RowDefinition>
+            <RowDefinition Height="50">
+
+            </RowDefinition>
+        </Grid.RowDefinitions>
+        <StackPanel x:Name="ControlPanel" Grid.Row="0">
+            
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Grid.Row="1">
+            <Button MinWidth="100" Margin="5" Click="OkCallback">
+                Ok
+            </Button>
+            <Button MinWidth="100" Margin="5" Click="CancelCallback">
+                Cancel
+            </Button>
+        </StackPanel>
     </Grid>
 </Window>

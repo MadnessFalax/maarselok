@@ -17,13 +17,20 @@ namespace desktop_client
     /// <summary>
     /// Interaction logic for Dialog.xaml
     /// </summary>
-    public partial class Dialog : Window
+    
+    public class DialogQuestionModel
     {
         public string Message { get; set; } = "Are you sure?";
 
         public bool? Response { get; set; } = false;
 
-        public Dialog()
+    }
+
+    public partial class DialogQuestion : Window
+    {
+        public DialogQuestionModel Model = new DialogQuestionModel();
+        
+        public DialogQuestion()
         {
             InitializeComponent();
             DataContext = this;
@@ -31,13 +38,13 @@ namespace desktop_client
 
         private void YesCallback(object sender, RoutedEventArgs e)
         {
-            Response = true;
+            Model.Response = true;
             Close();
         }
 
         private void NoCallback(object sender, RoutedEventArgs e)
         {
-            Response = false;
+            Model.Response = false;
             Close();
         }
     }

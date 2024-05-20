@@ -6,7 +6,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:desktop_client"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="School Application Management" Height="450" Width="800">
     <Window.Resources>
         <Style x:Key="RoundedButtonStyle" TargetType="Button">
             <Setter Property="Template">
@@ -80,16 +80,16 @@
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <Grid Background="#EEEEEE">
-                                            <CheckBox HorizontalAlignment="Center" VerticalAlignment="Center" IsChecked="{Binding Path=Checked, Mode=TwoWay}"></CheckBox>
+                                            <CheckBox HorizontalAlignment="Center" VerticalAlignment="Center"></CheckBox>
                                         </Grid>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
-                            <DataGridTextColumn Header="ID" Binding="{Binding Path=Entry.Id}"></DataGridTextColumn>
-                            <DataGridTextColumn Header="Name" Binding="{Binding Path=Entry.Name}"></DataGridTextColumn>
-                            <DataGridTextColumn Header="Address" Binding="{Binding Path=Entry.Address}"></DataGridTextColumn>
-                            <DataGridTextColumn Header="Created" Binding="{Binding Path=Entry.Created}"></DataGridTextColumn>
-                            <DataGridTextColumn Header="Last Updated" Binding="{Binding Path=Entry.LastUpdated}"></DataGridTextColumn>
+                            <DataGridTextColumn Header="ID" Binding="{Binding Id}"></DataGridTextColumn>
+                            <DataGridTextColumn Header="Name" Binding="{Binding Name}"></DataGridTextColumn>
+                            <DataGridTextColumn Header="Address" Binding="{Binding Address}"></DataGridTextColumn>
+                            <DataGridTextColumn Header="Created" Binding="{Binding Created}"></DataGridTextColumn>
+                            <DataGridTextColumn Header="Last Updated" Binding="{Binding LastUpdated}"></DataGridTextColumn>
                             <DataGridTemplateColumn>
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
@@ -151,7 +151,7 @@
                             </ColumnDefinition>
                         </Grid.ColumnDefinitions>
                         <StackPanel Grid.Column="0" Orientation="Horizontal">
-                            <TextBox Width="105" Margin="0, 0, 5, 0" Text="{Binding Path=ProgramSearch, Mode=TwoWay}"></TextBox>
+                            <TextBox Width="105" Margin="0, 0, 5, 0" Text="{Binding ProgramSearch, Mode=TwoWay}"></TextBox>
                             <Button Click="ProgramSearchCallback">
                                 <i:Icon Kind="icon_search" Color="#000" Size="15"></i:Icon>
                             </Button>
@@ -166,19 +166,19 @@
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <Grid Background="#EEEEEE">
-                                            <CheckBox HorizontalAlignment="Center" VerticalAlignment="Center" IsChecked="{Binding Path=Checked, Mode=TwoWay}"></CheckBox>
+                                            <CheckBox HorizontalAlignment="Center" VerticalAlignment="Center"></CheckBox>
                                         </Grid>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
-                            <DataGridTextColumn Header="ID" Binding="{Binding Path=Entry.Id}"></DataGridTextColumn>
-                            <DataGridTextColumn Header="Name" Binding="{Binding Path=Entry.Name}"></DataGridTextColumn>
-                            <DataGridTextColumn Header="Description" Binding="{Binding Path=Entry.Description}"></DataGridTextColumn>
-                            <DataGridTextColumn Header="Application Count" Binding="{Binding Path=Entry.ApplicationCount}"></DataGridTextColumn>
-                            <DataGridTextColumn Header="Capacity" Binding="{Binding Path=Entry.Capacity}"></DataGridTextColumn>
-                            <DataGridTextColumn Header="School Id" Binding="{Binding Path=Entry.SchoolId}"></DataGridTextColumn>
-                            <DataGridTextColumn Header="Created" Binding="{Binding Path=Entry.Created}"></DataGridTextColumn>
-                            <DataGridTextColumn Header="Last Updated" Binding="{Binding Path=Entry.LastUpdated}"></DataGridTextColumn>
+                            <DataGridTextColumn Header="ID" Binding="{Binding Id}"></DataGridTextColumn>
+                            <DataGridTextColumn Header="Name" Binding="{Binding Name}"></DataGridTextColumn>
+                            <DataGridTextColumn Header="Description" Binding="{Binding Description}"></DataGridTextColumn>
+                            <DataGridTextColumn Header="Application Count" Binding="{Binding ApplicationCount}"></DataGridTextColumn>
+                            <DataGridTextColumn Header="Capacity" Binding="{Binding Capacity}"></DataGridTextColumn>
+                            <DataGridTextColumn Header="School Id" Binding="{Binding SchoolId}"></DataGridTextColumn>
+                            <DataGridTextColumn Header="Created" Binding="{Binding Created}"></DataGridTextColumn>
+                            <DataGridTextColumn Header="Last Updated" Binding="{Binding LastUpdated}"></DataGridTextColumn>
                             <DataGridTemplateColumn>
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
@@ -239,12 +239,6 @@
 
                             </ColumnDefinition>
                         </Grid.ColumnDefinitions>
-                        <StackPanel Grid.Column="0" Orientation="Horizontal">
-                            <TextBox Width="105" Margin="0, 0, 5, 0" Text="{Binding Path=ApplicationSearch, Mode=TwoWay}"></TextBox>
-                            <Button Click="ApplicationSearchCallback">
-                                <i:Icon Kind="icon_search" Color="#000" Size="15"></i:Icon>
-                            </Button>
-                        </StackPanel>
                         <Button Grid.Column="2" Click="ApplicationRefreshCallback">
                             <i:Icon Kind="icon_refresh" Color="#000000" Size="15"></i:Icon>
                         </Button>
@@ -255,16 +249,16 @@
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <Grid Background="#EEEEEE">
-                                            <CheckBox HorizontalAlignment="Center" VerticalAlignment="Center" IsChecked="{Binding Path=Checked, Mode=TwoWay}"></CheckBox>
+                                            <CheckBox HorizontalAlignment="Center" VerticalAlignment="Center"></CheckBox>
                                         </Grid>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
-                            <DataGridTextColumn Header="ID" Binding="{Binding Path=Entry.Id}"></DataGridTextColumn>
-                            <DataGridTextColumn Header="Student ID" Binding="{Binding Path=Entry.StudentId}"></DataGridTextColumn>
-                            <DataGridTextColumn Header="Program ID" Binding="{Binding Path=Entry.ProgramId}"></DataGridTextColumn>
-                            <DataGridTextColumn Header="Created" Binding="{Binding Path=Entry.Created}"></DataGridTextColumn>
-                            <DataGridTextColumn Header="Last Updated" Binding="{Binding Path=Entry.LastUpdated}"></DataGridTextColumn>
+                            <DataGridTextColumn Header="ID" Binding="{Binding Id}"></DataGridTextColumn>
+                            <DataGridTextColumn Header="Student ID" Binding="{Binding StudentId}"></DataGridTextColumn>
+                            <DataGridTextColumn Header="Program ID" Binding="{Binding ProgramId}"></DataGridTextColumn>
+                            <DataGridTextColumn Header="Created" Binding="{Binding Created}"></DataGridTextColumn>
+                            <DataGridTextColumn Header="Last Updated" Binding="{Binding LastUpdated}"></DataGridTextColumn>
                             <DataGridTemplateColumn>
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
@@ -341,18 +335,18 @@
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <Grid Background="#EEEEEE">
-                                            <CheckBox HorizontalAlignment="Center" VerticalAlignment="Center" IsChecked="{Binding Path=Checked, Mode=TwoWay}"></CheckBox>
+                                            <CheckBox HorizontalAlignment="Center" VerticalAlignment="Center"></CheckBox>
                                         </Grid>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
-                            <DataGridTextColumn Header="ID" Binding="{Binding Path=Entry.Id}"></DataGridTextColumn>
-                            <DataGridTextColumn Header="Name" Binding="{Binding Path=Entry.Name}"></DataGridTextColumn>
-                            <DataGridTextColumn Header="Address" Binding="{Binding Path=Entry.Address}"></DataGridTextColumn>
-                            <DataGridTextColumn Header="Email" Binding="{Binding Path=Entry.Email}"></DataGridTextColumn>
-                            <DataGridTextColumn Header="Application Count" Binding="{Binding Path=Entry.ApplicationCount}"></DataGridTextColumn>
-                            <DataGridTextColumn Header="Created" Binding="{Binding Path=Entry.Created}"></DataGridTextColumn>
-                            <DataGridTextColumn Header="Last Updated" Binding="{Binding Path=Entry.LastUpdated}"></DataGridTextColumn>
+                            <DataGridTextColumn Header="ID" Binding="{Binding Id}"></DataGridTextColumn>
+                            <DataGridTextColumn Header="Name" Binding="{Binding Name}"></DataGridTextColumn>
+                            <DataGridTextColumn Header="Address" Binding="{Binding Address}"></DataGridTextColumn>
+                            <DataGridTextColumn Header="Email" Binding="{Binding Email}"></DataGridTextColumn>
+                            <DataGridTextColumn Header="Application Count" Binding="{Binding ApplicationCount}"></DataGridTextColumn>
+                            <DataGridTextColumn Header="Created" Binding="{Binding Created}"></DataGridTextColumn>
+                            <DataGridTextColumn Header="Last Updated" Binding="{Binding LastUpdated}"></DataGridTextColumn>
                             <DataGridTemplateColumn>
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>

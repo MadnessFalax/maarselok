@@ -27,7 +27,12 @@ namespace desktop_client
         private string label;
         public Regex regex { get; set; }
 
-        private Validation val_ref;
+        private Validation validation;
+
+        public bool IsValid()
+        {
+            return validation.Model.IsValid;
+        }
 
         public string Label
         {
@@ -48,7 +53,7 @@ namespace desktop_client
                 if (text != value) 
                 {
                     text = value;
-                    val_ref.Model.IsValid = regex.IsMatch(text);
+                    validation.Model.IsValid = regex.IsMatch(text);
                     OnPropertyChanged(nameof(Text));
                 }
             }
@@ -59,7 +64,7 @@ namespace desktop_client
             text = "";
             label = "Label Placeholder";
             regex = new Regex(".+");
-            val_ref = validation;
+            this.validation = validation;
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;
@@ -73,6 +78,7 @@ namespace desktop_client
     public partial class TextEntry : UserControl
     {
         public TextEntryModel Model { get; set; }
+
 
         public TextEntry()
         {
