@@ -33,7 +33,7 @@ namespace desktop_client
         public DialogQuestion()
         {
             InitializeComponent();
-            DataContext = this;
+            DataContext = Model;
         }
 
         private void YesCallback(object sender, RoutedEventArgs e)

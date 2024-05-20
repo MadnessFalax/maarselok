@@ -24,12 +24,42 @@ namespace desktop_client
     /// </summary>
     /// 
 
+    public class EntryControl<T> : INotifyPropertyChanged where T : ITable
+    {
+        private bool isChecked;
+        public bool IsChecked { 
+            get { return isChecked; } 
+            set
+            {
+                if (isChecked != value)
+                {
+                    isChecked = value;
+                    OnPropertyChanged(nameof(IsChecked));
+                }
+            }
+        }
+        public T Entry { get; set; }
+
+        public EntryControl(T entity)
+        {
+            IsChecked = false;
+            Entry = entity;
+        }
+
+        public event PropertyChangedEventHandler? PropertyChanged;
+
+        public void OnPropertyChanged(string propertyName) 
+        { 
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+    }
+
     public class MainWindowModel : INotifyPropertyChanged
     {
-        public ObservableCollection<SchoolTable> schools { get; set; } = new ObservableCollection<SchoolTable>();
-        public ObservableCollection<StudentTable> students { get; set; } = new ObservableCollection<StudentTable>();
-        public ObservableCollection<ApplicationTable> applications { get; set; } = new ObservableCollection<ApplicationTable>();
-        public ObservableCollection<ProgramTable> programs { get; set; } = new ObservableCollection<ProgramTable>();
+        public ObservableCollection<EntryControl<SchoolTable>> schools { get; set; } = new ObservableCollection<EntryControl<SchoolTable>>();
+        public ObservableCollection<EntryControl<StudentTable>> students { get; set; } = new ObservableCollection<EntryControl<StudentTable>>();
+        public ObservableCollection<EntryControl<ApplicationTable>> applications { get; set; } = new ObservableCollection<EntryControl<ApplicationTable>>();
+        public ObservableCollection<EntryControl<ProgramTable>> programs { get; set; } = new ObservableCollection<EntryControl<ProgramTable>>();
 
         public string SchoolSearch { get; set; } = "";
         public string StudentSearch { get; set; } = "";
@@ -50,7 +80,7 @@ namespace desktop_client
             {
                 foreach (var item in sch_map)
                 {
-                    schools.Add(item.Value);
+                    schools.Add(new EntryControl<SchoolTable>(item.Value));
                 }
             }
             else
@@ -59,7 +89,7 @@ namespace desktop_client
                 {
                     if (item.Value.Name.Contains(query))
                     {
-                        schools.Add(item.Value);
+                        schools.Add(new EntryControl<SchoolTable>(item.Value));
                     }
                 }
             }
@@ -72,7 +102,7 @@ namespace desktop_client
             {
                 foreach (var item in stu_map)
                 {
-                    students.Add(item.Value);
+                    students.Add(new EntryControl<StudentTable>(item.Value));
                 }
             }
             else
@@ -81,7 +111,7 @@ namespace desktop_client
                 {
                     if (item.Value.Name.Contains(query))
                     {
-                        students.Add(item.Value);
+                        students.Add(new EntryControl<StudentTable>(item.Value));
                     }
                 }
             }
@@ -94,7 +124,7 @@ namespace desktop_client
             {
                 foreach (var item in pro_map)
                 {
-                    programs.Add(item.Value);
+                    programs.Add(new EntryControl<ProgramTable>(item.Value));
                 }
             }
             else
@@ -103,7 +133,7 @@ namespace desktop_client
                 {
                     if (item.Value.Name.Contains(query))
                     {
-                        programs.Add(item.Value);
+                        programs.Add(new EntryControl<ProgramTable>(item.Value));
                     }
                 }
             }
@@ -114,7 +144,7 @@ namespace desktop_client
             var app_map = DataEntryPoint.ApplicationMap;
             foreach (var item in app_map)
             {
-                applications.Add(item.Value);
+                applications.Add(new EntryControl<ApplicationTable>(item.Value));
             }
         }
     }
@@ -135,23 +165,57 @@ namespace desktop_client
 
         private void SchoolDeleteCallback(object sender, RoutedEventArgs e)
         {
-            var toDelete = new List<SchoolTable>(ApplicationGrid.);
+            var dialog = new DialogQuestion();
+            dialog.Model.Message = "Are you sure you want to delete selected entries?";
+            dialog.ShowDialog();
+            var answer = dialog.Model.Response;
+            if (answer.Value)
+            {
+                var for_deletion = Model.schools.Where(x => x.IsChecked).Select(x => x.Entry).ToList();
+                var size = for_deletion.Count;
+
+                for (int i = 0; i < size; i++)
+                {
+                    var tmp = for_deletion[i];
+
+                    TableOperation<SchoolTable>.Delete(ref tmp);
+                }
+
+                TableOperation<SchoolTable>.ForceRefreshAll();
+                Model.schools.Clear();
+                Model.LoadSchools();
+            }
         }
 
         private void SchoolEditCallback(object sender, RoutedEventArgs e)
         {
-
+            var btn = sender as Button;
+            var ctx = btn.DataContext as EntryControl<SchoolTable>;
+            var dialog = new SchoolEditor(ctx.Entry.Name, ctx.Entry.Address);
+            dialog.ShowDialog();
+            if (dialog.Model.Ok)
+            {
+                ctx.Entry.Name = dialog.Model.nameEntry.Model.Text;
+                ctx.Entry.Address = dialog.Model.addressEntry.Model.Text;
+                var tmp = ctx.Entry;
+                TableOperation<SchoolTable>.Update(ref tmp);
+                Model.schools.Clear();
+                Model.LoadSchools();
+            }
         }
 
         private void SchoolCreateCallback(object sender, RoutedEventArgs e)
         {
             var dialog = new SchoolEditor();
             dialog.ShowDialog();
-            var entity = new SchoolTable(dialog.Model.nameEntry.Model.Text, dialog.Model.addressEntry.Model.Text);
-            TableOperation<SchoolTable>.Create(entity);
-            TableOperation<SchoolTable>.ForceRefreshAll();
-            Model.schools.Clear();
-            Model.LoadSchools();
+            if (dialog.Model.Ok)
+            {
+                var entity = new SchoolTable(dialog.Model.nameEntry.Model.Text, dialog.Model.addressEntry.Model.Text);
+                TableOperation<SchoolTable>.Create(entity);
+                TableOperation<SchoolTable>.ForceRefreshAll();
+                Model.schools.Clear();
+                Model.LoadSchools();
+            }
         }
 
         private void SchoolSearchCallback(object sender, RoutedEventArgs e)
@@ -176,7 +240,26 @@ namespace desktop_client
         }
         private void StudentDeleteCallback(object sender, RoutedEventArgs e)
         {
+            var dialog = new DialogQuestion();
+            dialog.Model.Message = "Are you sure you want to delete selected entries?";
+            dialog.ShowDialog();
+            var answer = dialog.Model.Response;
+            if (answer.Value)
+            {
+                var for_deletion = Model.students.Where(x => x.IsChecked).Select(x => x.Entry).ToList();
+                var size = for_deletion.Count;
 
+                for (int i = 0; i < size; i++)
+                {
+                    var tmp = for_deletion[i];
+
+                    TableOperation<StudentTable>.Delete(ref tmp);
+                }
+
+                TableOperation<StudentTable>.ForceRefreshAll();
+                Model.students.Clear();
+                Model.LoadSchools();
+            }
         }
 
         private void StudentEditCallback(object sender, RoutedEventArgs e)
@@ -212,7 +295,26 @@ namespace desktop_client
         }
         private void ApplicationDeleteCallback(object sender, RoutedEventArgs e)
         {
+            var dialog = new DialogQuestion();
+            dialog.Model.Message = "Are you sure you want to delete selected entries?";
+            dialog.ShowDialog();
+            var answer = dialog.Model.Response;
+            if (answer.Value)
+            {
+                var for_deletion = Model.applications.Where(x => x.IsChecked).Select(x => x.Entry).ToList();
+                var size = for_deletion.Count;
 
+                for (int i = 0; i < size; i++)
+                {
+                    var tmp = for_deletion[i];
+
+                    TableOperation<ApplicationTable>.Delete(ref tmp);
+                }
+
+                TableOperation<ApplicationTable>.ForceRefreshAll();
+                Model.applications.Clear();
+                Model.LoadSchools();
+            }
         }
 
         private void ApplicationEditCallback(object sender, RoutedEventArgs e)
@@ -234,7 +336,26 @@ namespace desktop_client
         }
         private void ProgramDeleteCallback(object sender, RoutedEventArgs e)
         {
+            var dialog = new DialogQuestion();
+            dialog.Model.Message = "Are you sure you want to delete selected entries?";
+            dialog.ShowDialog();
+            var answer = dialog.Model.Response;
+            if (answer.Value)
+            {
+                var for_deletion = Model.programs.Where(x => x.IsChecked).Select(x => x.Entry).ToList();
+                var size = for_deletion.Count;
 
+                for (int i = 0; i < size; i++)
+                {
+                    var tmp = for_deletion[i];
+
+                    TableOperation<ProgramTable>.Delete(ref tmp);
+                }
+
+                TableOperation<ProgramTable>.ForceRefreshAll();
+                Model.programs.Clear();
+                Model.LoadSchools();
+            }
         }
 
         private void ProgramEditCallback(object sender, RoutedEventArgs e)

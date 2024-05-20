@@ -7,23 +7,6 @@
         xmlns:local="clr-namespace:desktop_client"
         mc:Ignorable="d"
         Title="School Application Management" Height="450" Width="800">
-    <Window.Resources>
-        <Style x:Key="RoundedButtonStyle" TargetType="Button">
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Button">
-                        <Border Background="{TemplateBinding Background}"
-                                BorderBrush="{TemplateBinding BorderBrush}"
-                                BorderThickness="{TemplateBinding BorderThickness}"
-                                CornerRadius="3"
-                                Padding="{TemplateBinding Padding}">
-                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                        </Border>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-    </Window.Resources>
     <Grid Background="DarkGray">
         <Grid.ColumnDefinitions>
             <ColumnDefinition>
@@ -74,22 +57,14 @@
                             <i:Icon Kind="icon_refresh" Color="#000000" Size="15"></i:Icon>
                         </Button>
                     </Grid>
-                    <DataGrid Margin="5, 5, 5, 5" Grid.Row="1" IsReadOnly="True" x:Name="SchoolGrid" ItemsSource="{Binding schools}" AutoGenerateColumns="False">
+                    <DataGrid Margin="5, 5, 5, 5" Grid.Row="1" IsReadOnly="False" x:Name="SchoolGrid" ItemsSource="{Binding schools}" AutoGenerateColumns="False">
                         <DataGrid.Columns>
-                            <DataGridTemplateColumn Header="Select">
-                                <DataGridTemplateColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <Grid Background="#EEEEEE">
-                                            <CheckBox HorizontalAlignment="Center" VerticalAlignment="Center"></CheckBox>
-                                        </Grid>
-                                    </DataTemplate>
-                                </DataGridTemplateColumn.CellTemplate>
-                            </DataGridTemplateColumn>
-                            <DataGridTextColumn Header="ID" Binding="{Binding Id}"></DataGridTextColumn>
-                            <DataGridTextColumn Header="Name" Binding="{Binding Name}"></DataGridTextColumn>
-                            <DataGridTextColumn Header="Address" Binding="{Binding Address}"></DataGridTextColumn>
-                            <DataGridTextColumn Header="Created" Binding="{Binding Created}"></DataGridTextColumn>
-                            <DataGridTextColumn Header="Last Updated" Binding="{Binding LastUpdated}"></DataGridTextColumn>
+                            <DataGridCheckBoxColumn Header="Select" Binding="{Binding IsChecked, Mode=TwoWay}" IsReadOnly="False"></DataGridCheckBoxColumn>
+                            <DataGridTextColumn Header="ID" Binding="{Binding Entry.Id}" IsReadOnly="True"></DataGridTextColumn>
+                            <DataGridTextColumn Header="Name" Binding="{Binding Entry.Name}" IsReadOnly="True"></DataGridTextColumn>
+                            <DataGridTextColumn Header="Address" Binding="{Binding Entry.Address}" IsReadOnly="True"></DataGridTextColumn>
+                            <DataGridTextColumn Header="Created" Binding="{Binding Entry.Created}" IsReadOnly="True"></DataGridTextColumn>
+                            <DataGridTextColumn Header="Last Updated" Binding="{Binding Entry.LastUpdated}" IsReadOnly="True"></DataGridTextColumn>
                             <DataGridTemplateColumn>
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
@@ -166,19 +141,19 @@
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <Grid Background="#EEEEEE">
-                                            <CheckBox HorizontalAlignment="Center" VerticalAlignment="Center"></CheckBox>
+                                            <CheckBox HorizontalAlignment="Center" VerticalAlignment="Center" IsChecked="{Binding IsChecked}"></CheckBox>
                                         </Grid>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
-                            <DataGridTextColumn Header="ID" Binding="{Binding Id}"></DataGridTextColumn>
-                            <DataGridTextColumn Header="Name" Binding="{Binding Name}"></DataGridTextColumn>
-                            <DataGridTextColumn Header="Description" Binding="{Binding Description}"></DataGridTextColumn>
-                            <DataGridTextColumn Header="Application Count" Binding="{Binding ApplicationCount}"></DataGridTextColumn>
-                            <DataGridTextColumn Header="Capacity" Binding="{Binding Capacity}"></DataGridTextColumn>
-                            <DataGridTextColumn Header="School Id" Binding="{Binding SchoolId}"></DataGridTextColumn>
-                            <DataGridTextColumn Header="Created" Binding="{Binding Created}"></DataGridTextColumn>
-                            <DataGridTextColumn Header="Last Updated" Binding="{Binding LastUpdated}"></DataGridTextColumn>
+                            <DataGridTextColumn Header="ID" Binding="{Binding Entry.Id}"></DataGridTextColumn>
+                            <DataGridTextColumn Header="Name" Binding="{Binding Entry.Name}"></DataGridTextColumn>
+                            <DataGridTextColumn Header="Description" Binding="{Binding Entry.Description}"></DataGridTextColumn>
+                            <DataGridTextColumn Header="Application Count" Binding="{Binding Entry.ApplicationCount}"></DataGridTextColumn>
+                            <DataGridTextColumn Header="Capacity" Binding="{Binding Entry.Capacity}"></DataGridTextColumn>
+                            <DataGridTextColumn Header="School Id" Binding="{Binding Entry.SchoolId}"></DataGridTextColumn>
+                            <DataGridTextColumn Header="Created" Binding="{Binding Entry.Created}"></DataGridTextColumn>
+                            <DataGridTextColumn Header="Last Updated" Binding="{Binding Entry.LastUpdated}"></DataGridTextColumn>
                             <DataGridTemplateColumn>
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
@@ -249,16 +224,16 @@
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <Grid Background="#EEEEEE">
-                                            <CheckBox HorizontalAlignment="Center" VerticalAlignment="Center"></CheckBox>
+                                            <CheckBox HorizontalAlignment="Center" VerticalAlignment="Center" IsChecked="{Binding IsChecked}"></CheckBox>
                                         </Grid>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
-                            <DataGridTextColumn Header="ID" Binding="{Binding Id}"></DataGridTextColumn>
-                            <DataGridTextColumn Header="Student ID" Binding="{Binding StudentId}"></DataGridTextColumn>
-                            <DataGridTextColumn Header="Program ID" Binding="{Binding ProgramId}"></DataGridTextColumn>
-                            <DataGridTextColumn Header="Created" Binding="{Binding Created}"></DataGridTextColumn>
-                            <DataGridTextColumn Header="Last Updated" Binding="{Binding LastUpdated}"></DataGridTextColumn>
+                            <DataGridTextColumn Header="ID" Binding="{Binding Entry.Id}"></DataGridTextColumn>
+                            <DataGridTextColumn Header="Student ID" Binding="{Binding Entry.StudentId}"></DataGridTextColumn>
+                            <DataGridTextColumn Header="Program ID" Binding="{Binding Entry.ProgramId}"></DataGridTextColumn>
+                            <DataGridTextColumn Header="Created" Binding="{Binding Entry.Created}"></DataGridTextColumn>
+                            <DataGridTextColumn Header="Last Updated" Binding="{Binding Entry.LastUpdated}"></DataGridTextColumn>
                             <DataGridTemplateColumn>
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
@@ -335,18 +310,18 @@
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <Grid Background="#EEEEEE">
-                                            <CheckBox HorizontalAlignment="Center" VerticalAlignment="Center"></CheckBox>
+                                            <CheckBox HorizontalAlignment="Center" VerticalAlignment="Center" IsChecked="{Binding IsChecked}"></CheckBox>
                                         </Grid>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
-                            <DataGridTextColumn Header="ID" Binding="{Binding Id}"></DataGridTextColumn>
-                            <DataGridTextColumn Header="Name" Binding="{Binding Name}"></DataGridTextColumn>
-                            <DataGridTextColumn Header="Address" Binding="{Binding Address}"></DataGridTextColumn>
-                            <DataGridTextColumn Header="Email" Binding="{Binding Email}"></DataGridTextColumn>
-                            <DataGridTextColumn Header="Application Count" Binding="{Binding ApplicationCount}"></DataGridTextColumn>
-                            <DataGridTextColumn Header="Created" Binding="{Binding Created}"></DataGridTextColumn>
-                            <DataGridTextColumn Header="Last Updated" Binding="{Binding LastUpdated}"></DataGridTextColumn>
+                            <DataGridTextColumn Header="ID" Binding="{Binding Entry.Id}"></DataGridTextColumn>
+                            <DataGridTextColumn Header="Name" Binding="{Binding Entry.Name}"></DataGridTextColumn>
+                            <DataGridTextColumn Header="Address" Binding="{Binding Entry.Address}"></DataGridTextColumn>
+                            <DataGridTextColumn Header="Email" Binding="{Binding Entry.Email}"></DataGridTextColumn>
+                            <DataGridTextColumn Header="Application Count" Binding="{Binding Entry.ApplicationCount}"></DataGridTextColumn>
+                            <DataGridTextColumn Header="Created" Binding="{Binding Entry.Created}"></DataGridTextColumn>
+                            <DataGridTextColumn Header="Last Updated" Binding="{Binding Entry.LastUpdated}"></DataGridTextColumn>
                             <DataGridTemplateColumn>
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>

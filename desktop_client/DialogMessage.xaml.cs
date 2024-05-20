@@ -33,6 +33,7 @@ namespace desktop_client.Models
             {
                 Model.Message = message;
             }
+            DataContext = Model;
         }
 
         private void OkCallback(object sender, RoutedEventArgs e)
