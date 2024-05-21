@@ -18,7 +18,7 @@ namespace desktop_client
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
-
+            DataEntryPoint.connection_string = "Data Source=../../../../Bin/Debug/net6.0/mydb.db;";
             DataEntryPoint.initDB();
             DataEntryPoint.loadDB();
 

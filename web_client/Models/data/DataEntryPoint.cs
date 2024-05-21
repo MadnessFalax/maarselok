@@ -17,7 +17,7 @@ namespace CS_projekt.data
 
     public class DataEntryPoint
     {
-        static string connection_string = "Data Source=mydb.db;";
+        static public string connection_string = "Data Source=mydb.db;";
 
         static public Dictionary<int, StudentTable> StudentMap { get; set; }
         static public Dictionary<int, SchoolTable> SchoolMap { get; set; }

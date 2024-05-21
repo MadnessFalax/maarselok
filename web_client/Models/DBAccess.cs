@@ -84,6 +84,7 @@ namespace web_client.Models
 
         public DBAccess()
         {
+            DataEntryPoint.connection_string = "Data Source=../Bin/Debug/net6.0/mydb.db;";
             DataEntryPoint.initDB();
             DataEntryPoint.loadDB();
 

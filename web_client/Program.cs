@@ -13,6 +13,7 @@ namespace web_client
             builder.Services.AddControllersWithViews();
             builder.Services.AddSingleton<DBAccess>();
             builder.Services.AddTransient<LoginMiddleware>();
+            builder.Services.AddHostedService<DBRenewer>();
 
             var app = builder.Build();
 
