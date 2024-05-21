@@ -164,7 +164,7 @@ namespace desktop_client
         }
 
 
-        private void SchoolDeleteCallback(object sender, RoutedEventArgs e)
+        private async void SchoolDeleteCallback(object sender, RoutedEventArgs e)
         {
             var dialog = new DialogQuestion();
             dialog.Model.Message = "Are you sure you want to delete selected entries?";
@@ -172,25 +172,30 @@ namespace desktop_client
             var answer = dialog.Model.Response;
             if (answer.Value)
             {
-                var for_deletion = Model.schools.Where(x => x.IsChecked).Select(x => x.Entry).ToList();
-                var size = for_deletion.Count;
-
                 bool is_except = false;
 
-                for (int i = 0; i < size; i++)
+                await Task.Run(() =>
                 {
-                    var tmp = for_deletion[i];
-                    try
-                    {
-                        TableOperation<SchoolTable>.Delete(ref tmp);
-                    }
-                    catch
-                    {
-                        is_except = true;
-                    }
-                }
+                    var for_deletion = Model.schools.Where(x => x.IsChecked).Select(x => x.Entry).ToList();
+                    var size = for_deletion.Count;
 
-                TableOperation<SchoolTable>.ForceRefreshAll();
+
+                    for (int i = 0; i < size; i++)
+                    {
+                        var tmp = for_deletion[i];
+                        try
+                        {
+                            TableOperation<SchoolTable>.Delete(ref tmp);
+                        }
+                        catch
+                        {
+                            is_except = true;
+                        }
+                    }
+
+                    TableOperation<SchoolTable>.ForceRefreshAll();
+                });
+
                 Model.schools.Clear();
                 Model.LoadSchools();
 
@@ -202,7 +207,7 @@ namespace desktop_client
             }
         }
 
-        private void SchoolEditCallback(object sender, RoutedEventArgs e)
+        private async void SchoolEditCallback(object sender, RoutedEventArgs e)
         {
             var btn = sender as Button;
             var ctx = btn.DataContext as EntryControl<SchoolTable>;
@@ -213,21 +218,28 @@ namespace desktop_client
                 ctx.Entry.Name = dialog.Model.nameEntry.Model.Text;
                 ctx.Entry.Address = dialog.Model.addressEntry.Model.Text;
                 var tmp = ctx.Entry;
-                TableOperation<SchoolTable>.Update(ref tmp);
+                await Task.Run(() =>
+                {
+                    TableOperation<SchoolTable>.Update(ref tmp);
+                });
                 Model.schools.Clear();
                 Model.LoadSchools();
             }
         }
 
-        private void SchoolCreateCallback(object sender, RoutedEventArgs e)
+        private async void SchoolCreateCallback(object sender, RoutedEventArgs e)
         {
             var dialog = new SchoolEditor();
             dialog.ShowDialog();
             if (dialog.Model.Ok)
             {
                 var entity = new SchoolTable(dialog.Model.nameEntry.Model.Text, dialog.Model.addressEntry.Model.Text);
-                TableOperation<SchoolTable>.Create(entity);
-                TableOperation<SchoolTable>.ForceRefreshAll();
+                await Task.Run(() =>
+                {
+                    TableOperation<SchoolTable>.Create(entity);
+                    TableOperation<SchoolTable>.ForceRefreshAll();
+
+                });
                 Model.schools.Clear();
                 Model.LoadSchools();
             }
@@ -247,13 +259,17 @@ namespace desktop_client
             }
         }
 
-        private void SchoolRefreshCallback(object sender, RoutedEventArgs e)
+        private async void SchoolRefreshCallback(object sender, RoutedEventArgs e)
         {
-            TableOperation<SchoolTable>.ForceRefreshAll();
+            await Task.Run(() =>
+            {
+                TableOperation<SchoolTable>.ForceRefreshAll();
+            });
+
             Model.schools.Clear();
             Model.LoadSchools();
         }
-        private void StudentDeleteCallback(object sender, RoutedEventArgs e)
+        private async void StudentDeleteCallback(object sender, RoutedEventArgs e)
         {
             var dialog = new DialogQuestion();
             dialog.Model.Message = "Are you sure you want to delete selected entries?";
@@ -261,38 +277,48 @@ namespace desktop_client
             var answer = dialog.Model.Response;
             if (answer.Value)
             {
-                var for_deletion = Model.students.Where(x => x.IsChecked).Select(x => x.Entry).ToList();
-                var size = for_deletion.Count;
-
                 var is_except = false;
 
-                for (int i = 0; i < size; i++)
+                await Task.Run(() =>
                 {
-                    var tmp = for_deletion[i];
+                    var for_deletion = Model.students.Where(x => x.IsChecked).Select(x => x.Entry).ToList();
+                    var size = for_deletion.Count;
 
-                    try
+                    for (int i = 0; i < size; i++)
                     {
-                        TableOperation<StudentTable>.Delete(ref tmp);
+                        var tmp = for_deletion[i];
+
+                        try
+                        {
+                            TableOperation<StudentTable>.Delete(ref tmp);
+                        }
+                        catch
+                        {
+                            is_except = true;
+                        }
                     }
-                    catch
-                    {
-                        is_except = true;
-                    }
-                }
+                });
+
+                await Task.Run(() =>
+                {
+                    TableOperation<StudentTable>.ForceRefreshAll();
+                    TableOperation<ApplicationTable>.ForceRefreshAll();
+                });
+
+                Model.students.Clear();
+                Model.LoadStudents();
+                Model.applications.Clear();
+                Model.LoadApplications();
 
                 if (is_except)
                 {
                     var except_dialog = new DialogMessage("Some students could not have been deleted. Make sure they have no existing associated applications!");
                     except_dialog.ShowDialog();
                 }
-
-                TableOperation<StudentTable>.ForceRefreshAll();
-                Model.students.Clear();
-                Model.LoadSchools();
             }
         }
 
-        private void StudentEditCallback(object sender, RoutedEventArgs e)
+        private async void StudentEditCallback(object sender, RoutedEventArgs e)
         {
             var btn = sender as Button;
             var ctx = btn.DataContext as EntryControl<StudentTable>;
@@ -305,13 +331,17 @@ namespace desktop_client
                 ctx.Entry.Email = dialog.Model.emailEntry.Model.Text;
                 ctx.Entry.Password = dialog.Model.passwordEntry.Model.Text;
                 var tmp = ctx.Entry;
-                TableOperation<StudentTable>.Update(ref tmp);
+                await Task.Run(() =>
+                {
+                    TableOperation<StudentTable>.Update(ref tmp);
+                });
+                
                 Model.students.Clear();
                 Model.LoadStudents();
             }
         }
 
-        private void StudentCreateCallback(object sender, RoutedEventArgs e)
+        private async void StudentCreateCallback(object sender, RoutedEventArgs e)
         {
             var dialog = new StudentEditor();
             dialog.ShowDialog();
@@ -323,8 +353,12 @@ namespace desktop_client
                     dialog.Model.emailEntry.Model.Text, 
                     dialog.Model.passwordEntry.Model.Text
                 );
-                TableOperation<StudentTable>.Create(entity);
-                TableOperation<StudentTable>.ForceRefreshAll();
+
+                await Task.Run(() =>
+                {
+                    TableOperation<StudentTable>.Create(entity);
+                    TableOperation<StudentTable>.ForceRefreshAll();
+                });
                 Model.students.Clear();
                 Model.LoadStudents();
             }
@@ -345,13 +379,16 @@ namespace desktop_client
 
         }
 
-        private void StudentRefreshCallback(object sender, RoutedEventArgs e)
+        private async void StudentRefreshCallback(object sender, RoutedEventArgs e)
         {
-            TableOperation<StudentTable>.ForceRefreshAll();
+            await Task.Run(() =>
+            {
+                TableOperation<StudentTable>.ForceRefreshAll();
+            });
             Model.students.Clear();
             Model.LoadStudents();
         }
-        private void ApplicationDeleteCallback(object sender, RoutedEventArgs e)
+        private async void ApplicationDeleteCallback(object sender, RoutedEventArgs e)
         {
             var dialog = new DialogQuestion();
             dialog.Model.Message = "Are you sure you want to delete selected entries?";
@@ -359,35 +396,39 @@ namespace desktop_client
             var answer = dialog.Model.Response;
             if (answer.Value)
             {
-                var for_deletion = Model.applications.Where(x => x.IsChecked).Select(x => x.Entry).ToList();
-                var size = for_deletion.Count;
-
-                for (int i = 0; i < size; i++)
+                await Task.Run(() =>
                 {
-                    var tmp = for_deletion[i];
+                    var for_deletion = Model.applications.Where(x => x.IsChecked).Select(x => x.Entry).ToList();
+                    var size = for_deletion.Count;
 
-                    TableOperation<ApplicationTable>.Delete(ref tmp);
-                }
+                    for (int i = 0; i < size; i++)
+                    {
+                        var tmp = for_deletion[i];
 
-                TableOperation<ApplicationTable>.ForceRefreshAll();
+                        TableOperation<ApplicationTable>.Delete(ref tmp);
+                    }
+
+                    TableOperation<ApplicationTable>.ForceRefreshAll();
+                    TableOperation<StudentTable>.ForceRefreshAll();
+                    TableOperation<ProgramTable>.ForceRefreshAll();
+                });
+
                 Model.applications.Clear();
                 Model.LoadApplications();
-                TableOperation<StudentTable>.ForceRefreshAll();
                 Model.students.Clear();
                 Model.LoadStudents();
-                TableOperation<ProgramTable>.ForceRefreshAll();
                 Model.programs.Clear();
                 Model.LoadPrograms();
             }
         }
 
-        private void ApplicationEditCallback(object sender, RoutedEventArgs e)
+        private async void ApplicationEditCallback(object sender, RoutedEventArgs e)
         {
             var btn = sender as Button;
             var ctx = btn.DataContext as EntryControl<ApplicationTable>;
             var dialog = new ApplicationEditor(
-                DataEntryPoint.StudentMap.Where(x => x.Value.ApplicationCount < 3).Select(x => x.Value).ToList(),
-                DataEntryPoint.ProgramMap.Where(x => x.Value.ApplicationCount < x.Value.Capacity).Select(x => x.Value).ToList(),
+                DataEntryPoint.StudentMap.Where(x => x.Value.ApplicationCount < 3 || x.Value.Id == ctx.Entry.StudentId).Select(x => x.Value).ToList(),
+                DataEntryPoint.ProgramMap.Where(x => x.Value.ApplicationCount < x.Value.Capacity || x.Value.Id == ctx.Entry.ProgramId).Select(x => x.Value).ToList(),
                 ctx.Entry.StudentId,
                 ctx.Entry.ProgramId
             );
@@ -397,19 +438,22 @@ namespace desktop_client
                 ctx.Entry.StudentId = dialog.Model.studentEntry.Model.SelectedId;
                 ctx.Entry.ProgramId = dialog.Model.programEntry.Model.SelectedId;
                 var tmp = ctx.Entry;
-                TableOperation<ApplicationTable>.Update(ref tmp);
+                await Task.Run(() =>
+                {
+                    TableOperation<ApplicationTable>.Update(ref tmp);
+                    TableOperation<StudentTable>.ForceRefreshAll();
+                    TableOperation<ProgramTable>.ForceRefreshAll();
+                });
                 Model.applications.Clear();
                 Model.LoadApplications();
-                TableOperation<StudentTable>.ForceRefreshAll();
                 Model.students.Clear();
                 Model.LoadStudents();
-                TableOperation<ProgramTable>.ForceRefreshAll();
                 Model.programs.Clear();
                 Model.LoadPrograms();
             }
         }
 
-        private void ApplicationCreateCallback(object sender, RoutedEventArgs e)
+        private async void ApplicationCreateCallback(object sender, RoutedEventArgs e)
         {
             var dialog = new ApplicationEditor(
                 DataEntryPoint.StudentMap.Where(x => x.Value.ApplicationCount < 3).Select(x => x.Value).ToList(),
@@ -419,27 +463,34 @@ namespace desktop_client
             if (dialog.Model.Ok)
             {
                 var entity = new ApplicationTable(dialog.Model.studentEntry.Model.SelectedId, dialog.Model.programEntry.Model.SelectedId);
-                TableOperation<ApplicationTable>.Create(entity);
-                TableOperation<ApplicationTable>.ForceRefreshAll();
+
+                await Task.Run(() =>
+                {
+                    TableOperation<ApplicationTable>.Create(entity);
+                    TableOperation<ApplicationTable>.ForceRefreshAll();
+                    TableOperation<StudentTable>.ForceRefreshAll();
+                    TableOperation<ProgramTable>.ForceRefreshAll();
+                });
                 Model.applications.Clear();
                 Model.LoadApplications();
-                TableOperation<StudentTable>.ForceRefreshAll();
                 Model.students.Clear();
                 Model.LoadStudents();
-                TableOperation<ProgramTable>.ForceRefreshAll();
                 Model.programs.Clear();
                 Model.LoadPrograms();
             }
         }
 
-        private void ApplicationRefreshCallback(object sender, RoutedEventArgs e)
+        private async void ApplicationRefreshCallback(object sender, RoutedEventArgs e)
         {
-            TableOperation<ApplicationTable>.ForceRefreshAll();
+            await Task.Run(() =>
+            {
+                TableOperation<ApplicationTable>.ForceRefreshAll();
+            });
             Model.applications.Clear();
             Model.LoadApplications();
 
         }
-        private void ProgramDeleteCallback(object sender, RoutedEventArgs e)
+        private async void ProgramDeleteCallback(object sender, RoutedEventArgs e)
         {
             var dialog = new DialogQuestion();
             dialog.Model.Message = "Are you sure you want to delete selected entries?";
@@ -447,37 +498,41 @@ namespace desktop_client
             var answer = dialog.Model.Response;
             if (answer.Value)
             {
-                var for_deletion = Model.programs.Where(x => x.IsChecked).Select(x => x.Entry).ToList();
-                var size = for_deletion.Count;
-
                 var is_except = false;
 
-                for (int i = 0; i < size; i++)
+                await Task.Run(() =>
                 {
-                    var tmp = for_deletion[i];
-                    try
-                    {
-                        TableOperation<ProgramTable>.Delete(ref tmp);
-                    }
-                    catch
-                    {
-                        is_except = true;
-                    }
-                }
+                    var for_deletion = Model.programs.Where(x => x.IsChecked).Select(x => x.Entry).ToList();
+                    var size = for_deletion.Count;
 
+                    for (int i = 0; i < size; i++)
+                    {
+                        var tmp = for_deletion[i];
+                        try
+                        {
+                            TableOperation<ProgramTable>.Delete(ref tmp);
+                        }
+                        catch
+                        {
+                            is_except = true;
+                        }
+                    }
+
+                    TableOperation<ProgramTable>.ForceRefreshAll();
+
+                });
                 if (is_except)
                 {
                     var except_dialog = new DialogMessage("Some programs could not have been deleted. Make sure they have no existing associated applications!");
                     except_dialog.ShowDialog();
                 }
 
-                TableOperation<ProgramTable>.ForceRefreshAll();
                 Model.programs.Clear();
                 Model.LoadPrograms();
             }
         }
 
-        private void ProgramEditCallback(object sender, RoutedEventArgs e)
+        private async void ProgramEditCallback(object sender, RoutedEventArgs e)
         {
             var btn = sender as Button;
             var ctx = btn.DataContext as EntryControl<ProgramTable>;
@@ -496,13 +551,17 @@ namespace desktop_client
                 ctx.Entry.Capacity = int.Parse(dialog.Model.capacityEntry.Model.Text);
                 ctx.Entry.SchoolId = dialog.Model.schoolEntry.Model.SelectedId;
                 var tmp = ctx.Entry;
-                TableOperation<ProgramTable>.Update(ref tmp);
+                await Task.Run(() =>
+                {
+                    TableOperation<ProgramTable>.Update(ref tmp);
+                });
+
                 Model.programs.Clear();
                 Model.LoadPrograms();
             }
         }
 
-        private void ProgramCreateCallback(object sender, RoutedEventArgs e)
+        private async void ProgramCreateCallback(object sender, RoutedEventArgs e)
         {
             var dialog = new ProgramEditor(
                 DataEntryPoint.SchoolMap.Select(x => x.Value).ToList()
@@ -516,8 +575,12 @@ namespace desktop_client
                     dialog.Model.descriptionEntry.Model.Text,
                     int.Parse(dialog.Model.capacityEntry.Model.Text)
                 );
-                TableOperation<ProgramTable>.Create(entity);
-                TableOperation<ProgramTable>.ForceRefreshAll();
+                await Task.Run(() =>
+                {
+                    TableOperation<ProgramTable>.Create(entity);
+                    TableOperation<ProgramTable>.ForceRefreshAll();
+                });
+
                 Model.programs.Clear();
                 Model.LoadPrograms();
             }
@@ -538,9 +601,11 @@ namespace desktop_client
 
         }
 
-        private void ProgramRefreshCallback(object sender, RoutedEventArgs e)
+        private async void ProgramRefreshCallback(object sender, RoutedEventArgs e)
         {
-            TableOperation<ProgramTable>.ForceRefreshAll();
+            await Task.Run(() => { 
+                TableOperation<ProgramTable>.ForceRefreshAll();
+            });
             Model.programs.Clear();
             Model.LoadPrograms();
 
