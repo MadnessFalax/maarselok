@@ -5,38 +5,40 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:desktop_client"
              mc:Ignorable="d" 
-             d:DesignHeight="40" d:DesignWidth="600">
-    <Grid Margin="5, 5, 5, 5">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="200">
+             d:DesignHeight="40" d:DesignWidth="400">
+    <Border BorderThickness="1" BorderBrush="DarkGray">
+        <Grid Margin="5, 5, 5, 5">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="100">
 
-            </ColumnDefinition>
-            <ColumnDefinition Width="200">
+                </ColumnDefinition>
+                <ColumnDefinition Width="150">
 
-            </ColumnDefinition>
-            <ColumnDefinition Width="100">
+                </ColumnDefinition>
+                <ColumnDefinition Width="*">
 
-            </ColumnDefinition>
-            <ColumnDefinition Width="100">
+                </ColumnDefinition>
+                <ColumnDefinition Width="*">
 
-            </ColumnDefinition>
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition>
+                </ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition>
 
-            </RowDefinition>
-        </Grid.RowDefinitions>
-        <Label Grid.Column="0" Content="{Binding Path=Model.Label, Mode=TwoWay}" HorizontalAlignment="Right">
+                </RowDefinition>
+            </Grid.RowDefinitions>
+            <Label Grid.Column="0" Content="{Binding Model.Label, Mode=TwoWay}" HorizontalAlignment="Right">
 
-        </Label>
-        <TextBox Grid.Column="1" Text="{Binding Path=Model.Text, Mode=TwoWay}" IsReadOnly="true">
+            </Label>
+            <TextBox Grid.Column="1" Text="{Binding Model.SelectedName}" IsReadOnly="true">
 
-        </TextBox>
-        <Button Grid.Column="2" Margin="5, 5, 5, 5" Click="ChooseCallback">
-            Choose
-        </Button>
-        <local:Validation Grid.Column="3" x:Name="TextValidation" HorizontalAlignment="Left" VerticalAlignment="Center">
+            </TextBox>
+            <Button Grid.Column="3" Margin="5, 5, 5, 5" Click="ChooseCallback">
+                Choose
+            </Button>
+            <local:Validation Grid.Column="2" x:Name="TextValidation" HorizontalAlignment="Left" VerticalAlignment="Center">
 
-        </local:Validation>
-    </Grid>
+            </local:Validation>
+        </Grid>
+    </Border>
 </UserControl>

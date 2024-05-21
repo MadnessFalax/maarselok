@@ -59,11 +59,11 @@ namespace desktop_client
             }
         }
 
-        public TextEntryModel(Validation validation) 
+        public TextEntryModel(Validation validation, bool expectNumber = false) 
         {
             text = "";
             label = "Label Placeholder";
-            regex = new Regex(".+");
+            regex = expectNumber ? new Regex(@"^[0-9]+$") : new Regex(".+");
             this.validation = validation;
         }
 
@@ -79,11 +79,12 @@ namespace desktop_client
     {
         public TextEntryModel Model { get; set; }
 
-
-        public TextEntry()
+        public bool ExpectNumber { get; set; } = false;
+        public TextEntry(bool expectNumber = false)
         {
             InitializeComponent();
-            Model = new TextEntryModel(TextValidation);
+            ExpectNumber = expectNumber; 
+            Model = new TextEntryModel(TextValidation, ExpectNumber);
             DataContext = Model;
         }
 

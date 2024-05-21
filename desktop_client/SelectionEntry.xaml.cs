@@ -22,43 +22,40 @@ namespace desktop_client
     /// </summary>
     /// 
 
-    public class SelectionEntryModel
+
+    public class SelectionEntryModel : INotifyPropertyChanged
     {
-        private string text;
-        private int selected_index;
-        public int SelectedId { get; set; }
+        public List<(int, string)> Selection;
+        private (int, string) selected = (-1, "");
+        public int SelectedId { 
+            get { return selected.Item1; } 
+            set
+            {
+                if (value != selected.Item1)
+                {
+                    selected = Selection.Where(x => x.Item1 == value).First();
+                    if (Selection.Any(x => x.Item1 == SelectedId))
+                    {
+                        val_ref.Model.IsValid = true;
+                    }
+                    else
+                    {
+                        val_ref.Model.IsValid = false;
+                    }
+                    OnPropertyChanged(nameof(SelectedId));
+                    OnPropertyChanged(nameof(SelectedName));
+                }
+            }
+        }
+
+        public string SelectedName
+        {
+            get { return selected.Item2; }
+            set { }
+        }
+
         private string label;
         private Validation val_ref;
-        private List<(int, string)> selection;
-
-        public List<(int, string)> Selection { 
-            get { return selection; }
-            set
-            {
-                selection = value;
-                SelectedIndex = 0;
-                OnPropertyChanged(nameof(Selection));
-            }
-        }
-
-        public int SelectedIndex { 
-            get { return selected_index; }
-            set
-            {
-                selected_index = value;
-                if (value >= selection.Count)
-                {
-                    text = "";
-                    val_ref.Model.IsValid = false;
-                }
-                else
-                {
-                    text = selection[value].Item2;
-                    val_ref.Model.IsValid = true;
-                    SelectedId = selection[value].Item1;
-                }
-            }
-        }
 
         public string Label
         {
@@ -73,26 +70,16 @@ namespace desktop_client
             }
         }
 
-        public string Text
-        {
-            get { return text; }
-            set
-            {
-                if (text != value)
-                {
-                    text = value;;
-                    OnPropertyChanged(nameof(Text));
-                }
-            }
-        }
-
         public SelectionEntryModel(Validation validation)
         {
-            selected_index = 0;
-            selection = new List<(int, string)>();
-            text = "";
+            Selection = new List<(int, string)>();
             label = "Label Placeholder";
             val_ref = validation;
+        }
+
+        public bool IsValid()
+        {
+            return val_ref.Model.IsValid;
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;
@@ -125,11 +112,22 @@ namespace desktop_client
             Model.Selection = sel;
         }
 
+        public void SetInitialSelected(int? id)
+        {
+            if (id != null)
+            {
+                Model.SelectedId = id.Value;
+            }
+        }
+
         private void ChooseCallback(object sender, RoutedEventArgs e)
         {
             var dialog = new ChooseWindow(Model.Selection);
             dialog.ShowDialog();
-
+            if (dialog.Model.Ok)
+            {
+                Model.SelectedId = dialog.Model.SelectedId;
+            }
         }
     }
 }

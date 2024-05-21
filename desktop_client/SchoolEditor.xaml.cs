@@ -41,12 +41,10 @@ namespace desktop_client
 
             Model.nameEntry.SetLabel("Name");
             Model.nameEntry.SetText(nameInitialText == null ? "" : nameInitialText);
-            Model.nameEntry.SetRegex(".+");
             ControlPanel.Children.Add(Model.nameEntry);
 
             Model.addressEntry.SetLabel("Address");
             Model.addressEntry.SetText(addressInitialText == null ? "" : addressInitialText);
-            Model.addressEntry.SetRegex(".+");
             ControlPanel.Children.Add(Model.addressEntry);
         }
 

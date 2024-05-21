@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:desktop_client"
         mc:Ignorable="d"
-        Title="SchoolEditor" Height="400" Width="500">
+        Title="School Editor" Height="400" Width="500">
     <Grid Background="LightGray">
         <Grid.RowDefinitions>
             <RowDefinition Height="*">

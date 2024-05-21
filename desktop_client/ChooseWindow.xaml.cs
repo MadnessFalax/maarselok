@@ -19,14 +19,30 @@ namespace desktop_client
     /// <summary>
     /// Interaction logic for ChooseWindow.xaml
     /// </summary>
-    /// 
+
+    public class SelectionEntryControl
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+
+        public SelectionEntryControl(int id, string name)
+        {
+            Id = id;
+            Name = name;
+        }
+    }
+
     public class ChooseWindowModel
     {
-        public ObservableCollection<(int, string)> Selection { get; set; }
+        public bool Ok = false;
+
+        public int SelectedId = -1;
+
+        public ObservableCollection<SelectionEntryControl> Selection { get; set; }
 
         public ChooseWindowModel(List<(int, string)> selection)
         {
-            Selection = new ObservableCollection<(int, string)>(selection);
+            Selection = new ObservableCollection<SelectionEntryControl>(selection.Select(x => new SelectionEntryControl(x.Item1, x.Item2)).ToList());
         }
     }
     public partial class ChooseWindow : Window
@@ -38,6 +54,20 @@ namespace desktop_client
             Model = new ChooseWindowModel(selection);
             DataContext = Model;
             InitializeComponent();
+        }
+
+        private void ChooseCallback(object sender, RoutedEventArgs e)
+        {
+            Button btn = sender as Button;
+            var ctx = btn.DataContext as SelectionEntryControl;
+            Model.Ok = true;
+            Model.SelectedId = ctx.Id;
+            Close();
+        }
+
+        private void CancelCallback(object sender, RoutedEventArgs e)
+        {
+            Close();
         }
     }
 }

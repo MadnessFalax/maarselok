@@ -23,12 +23,13 @@
         </Grid>
         <DataGrid Grid.Row="1" Margin="0, 5, 0, 5" ItemsSource="{Binding Selection}" AutoGenerateColumns="False">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Name" Binding="{Binding Item2}" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Id" Binding="{Binding Id}" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Name" Binding="{Binding Name}" IsReadOnly="True"/>
                 <DataGridTemplateColumn>
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <Grid>
-                                <Button>
+                                <Button Click="ChooseCallback">
                                     Choose
                                 </Button>
                             </Grid>
@@ -49,11 +50,8 @@
                     
                 </ColumnDefinition>
             </Grid.ColumnDefinitions>
-            <Button Grid.Column="2" Width="50" Margin="10, 0, 0, 0">
+            <Button Grid.Column="2" Width="50" Margin="10, 0, 0, 0" Click="CancelCallback">
                 Cancel
-            </Button>
-            <Button Grid.Column="1" Width="50" Margin="10, 0, 0, 0">
-                Confirm
             </Button>
         </Grid>
     </Grid>
