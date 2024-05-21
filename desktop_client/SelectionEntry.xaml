@@ -33,7 +33,7 @@
             <TextBox Grid.Column="1" Text="{Binding Model.SelectedName}" IsReadOnly="true">
 
             </TextBox>
-            <Button Grid.Column="3" Margin="5, 5, 5, 5" Click="ChooseCallback">
+            <Button Grid.Column="3" Margin="5, 5, 5, 5" Click="ChooseCallback" Style="{DynamicResource RoundedButtonStyle}">
                 Choose
             </Button>
             <local:Validation Grid.Column="2" x:Name="TextValidation" HorizontalAlignment="Left" VerticalAlignment="Center">

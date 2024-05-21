@@ -5,10 +5,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:desktop_client"
         mc:Ignorable="d"
-        Title="ChooseWindow" Height="450" Width="800">
-    <Grid Margin="5">
+        Title="Selection Window" Height="400" Width="500" Background="LightGray">
+    <Grid Margin="5" Background="LightGray">
         <Grid.RowDefinitions>
-            <RowDefinition Height="50">
+            <RowDefinition Height="0">
                 
             </RowDefinition>
             <RowDefinition Height="*">
@@ -29,7 +29,7 @@
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <Grid>
-                                <Button Click="ChooseCallback">
+                                <Button Click="ChooseCallback" Style="{DynamicResource RoundedButtonStyle}">
                                     Choose
                                 </Button>
                             </Grid>
@@ -50,7 +50,7 @@
                     
                 </ColumnDefinition>
             </Grid.ColumnDefinitions>
-            <Button Grid.Column="2" Width="50" Margin="10, 0, 0, 0" Click="CancelCallback">
+            <Button Grid.Column="2" Width="50" Margin="10, 0, 0, 0" Click="CancelCallback" Style="{DynamicResource RoundedButtonStyle}">
                 Cancel
             </Button>
         </Grid>

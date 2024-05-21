@@ -143,7 +143,7 @@
                             <DataGridTextColumn Header="Description" Binding="{Binding Entry.Description}" IsReadOnly="True"></DataGridTextColumn>
                             <DataGridTextColumn Header="Application Count" Binding="{Binding Entry.ApplicationCount}" IsReadOnly="True"></DataGridTextColumn>
                             <DataGridTextColumn Header="Capacity" Binding="{Binding Entry.Capacity}" IsReadOnly="True"></DataGridTextColumn>
-                            <DataGridTextColumn Header="School Id" Binding="{Binding Entry.SchoolId}" IsReadOnly="True"></DataGridTextColumn>
+                            <DataGridTextColumn Header="School" Binding="{Binding Entry.School.Name}" IsReadOnly="True"></DataGridTextColumn>
                             <DataGridTextColumn Header="Created" Binding="{Binding Entry.Created}" IsReadOnly="True"></DataGridTextColumn>
                             <DataGridTextColumn Header="Last Updated" Binding="{Binding Entry.LastUpdated}" IsReadOnly="True"></DataGridTextColumn>
                             <DataGridTemplateColumn>
@@ -214,8 +214,8 @@
                         <DataGrid.Columns>
                             <DataGridCheckBoxColumn Header="Select" Binding="{Binding IsChecked, Mode=TwoWay}" IsReadOnly="False"></DataGridCheckBoxColumn>
                             <DataGridTextColumn Header="ID" Binding="{Binding Entry.Id}" IsReadOnly="True"></DataGridTextColumn>
-                            <DataGridTextColumn Header="Student ID" Binding="{Binding Entry.StudentId}" IsReadOnly="True"></DataGridTextColumn>
-                            <DataGridTextColumn Header="Program ID" Binding="{Binding Entry.ProgramId}" IsReadOnly="True"></DataGridTextColumn>
+                            <DataGridTextColumn Header="Student" Binding="{Binding Entry.Student.Name}" IsReadOnly="True"></DataGridTextColumn>
+                            <DataGridTextColumn Header="Program" Binding="{Binding Entry.Program.Name}" IsReadOnly="True"></DataGridTextColumn>
                             <DataGridTextColumn Header="Created" Binding="{Binding Entry.Created}" IsReadOnly="True"></DataGridTextColumn>
                             <DataGridTextColumn Header="Last Updated" Binding="{Binding Entry.LastUpdated}" IsReadOnly="True"></DataGridTextColumn>
                             <DataGridTemplateColumn>
